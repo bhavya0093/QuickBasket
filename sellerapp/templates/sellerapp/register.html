@@ -23,7 +23,11 @@
         <i class="fas fa-user-plus"></i>
         <h2>Register Account</h2>
     </div>
-
+{% if e_msg %}
+<div class="error-msg">
+    🚫 {{e_msg}}
+</div>
+{% endif %}
     <form id="registerForm" method="POST" action="{% url 'register' %}">
         {% csrf_token %}
 

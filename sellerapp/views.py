@@ -17,6 +17,13 @@ def register(request):
         email = request.POST['email']
         contectno = request.POST['contectno']
 
+        # Duplicate Email Validation
+        if User.objects.filter(email=email).exists():
+            context = {
+                "e_msg": "Email already registered! Please Login."
+            }
+            return render(request, "sellerapp/register.html", context)
+
         # Generate a strong random password (instead of the old predictable scheme)
         plain_password = generate_strong_password()
 

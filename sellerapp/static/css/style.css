@@ -185,3 +185,17 @@ padding: 1.3rem;
 flex-direction: column;
 }
 }
+.error-msg{
+    background:#fff4f4;
+    border-left:4px solid #ff4d4f;
+    color:#d63031;
+    padding:10px 14px;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:14px;
+    font-weight:600;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
