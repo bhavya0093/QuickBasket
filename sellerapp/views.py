@@ -25,6 +25,15 @@ def register(request):
             password=make_password(plain_password),   # store HASH, never plain text
             role=role
         )
+        myCustomMail(
+            "Welcome To QuickBasket",
+            "welcome_mail",
+            email,
+            {
+                'name': firstname,
+                'email': email
+            }
+        )
 
         try:
             myCustomMail(
