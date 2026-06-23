@@ -8,7 +8,7 @@ class User(models.Model):
     role = models.CharField(max_length=20)
     otp = models.IntegerField(null=True, blank=True)
     otp_created_at = models.DateTimeField(null=True, blank=True)
-    
+    otp_attempts = models.IntegerField(default=0) 
     create_at =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

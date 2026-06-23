@@ -344,6 +344,7 @@ def forgot_password(request):
             otp = random.randint(1111,9999)
             uid.otp = otp
             uid.otp_created_at = timezone.now()
+            uid.otp_attempts = 0 
             uid.save()
             print("EMAIL:", email)
             myCustomMail("Forgot Password","mail_template",email,{'otp':otp})
@@ -368,12 +369,33 @@ def reset_password(request):
         repassword = request.POST['repassword']
 
         uid = User.objects.get(email = email)
+        # OTP Attempt Limit Check
+        if uid.otp_attempts >= 3:
+            context = {
+                'email': email,
+                'e_msg': '❌ Too many wrong OTP attempts. Please resend OTP.'
+            }
+            return render(request, "sellerapp/reset_password.html", context)
         if uid.otp_created_at:
             if timezone.now() > uid.otp_created_at + timedelta(minutes=1):
                 context = {
                     'email': email,
                     'e_msg': 'OTP Expired! Please request a new OTP.'
                 }
+                return render(request, "sellerapp/reset_password.html", context)
+        # Wrong OTP Check
+        if otp != str(uid.otp):
+
+            uid.otp_attempts += 1
+            uid.save()
+
+            remaining = 3 - uid.otp_attempts
+
+            context = {
+                'email': email,
+                'e_msg': f'❌ Invalid OTP. {remaining} attempt(s) left.'
+            }
+
             return render(request, "sellerapp/reset_password.html", context)
 
         if otp == str(uid.otp) and newpassword == repassword:
@@ -387,8 +409,10 @@ def reset_password(request):
                 return render(request, "sellerapp/reset_password.html", context)
 
             uid.password = make_password(newpassword)
+
             uid.otp = None
             uid.otp_created_at = None
+            uid.otp_attempts = 0
             uid.save()
             context = {
                         's_msg' : "Password Change Succsessfully..!"
