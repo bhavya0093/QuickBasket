@@ -269,3 +269,16 @@
 }
 
 .delbtn:hover { background: #fff1f2; }
+
+.pwd-wrap { position: relative; }
+.pwd-wrap input { width: 100%; padding-right: 38px; box-sizing: border-box; }
+.pwd-eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #8a8a8a;
+    font-size: 0.9rem;
+}
+.pwd-eye:hover { color: #444; }

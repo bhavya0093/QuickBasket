@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class User(models.Model):
     email = models.CharField(max_length=50,unique=True)
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=128)
     role = models.CharField(max_length=20)
     otp = models.IntegerField(null=True, blank=True)
     create_at =models.DateTimeField(auto_now_add=True)

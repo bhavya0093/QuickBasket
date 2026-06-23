@@ -69,8 +69,84 @@
                                     <i class="fas fa-save"></i> Save Changes
                                 </button>
                             </div>
+                       </form>
+                    </div>
+                </div>
+
+                <!-- CHANGE PASSWORD -->
+                <div class="pgc-card" style="margin-top:24px;">
+                    <div class="pgc-right" style="flex:1;">
+                        <div class="pgc-right-top">
+                            <div class="pgc-right-title"><i class="fas fa-lock"></i> Change Password</div>
+                            <div class="pgc-right-sub">Update your account password</div>
+                        </div>
+
+                        {% if pwd_e_msg %}
+                            <p style="color:#e53935;font-weight:600;margin:6px 0 12px;">{{pwd_e_msg}}</p>
+                        {% endif %}
+                        {% if pwd_s_msg %}
+                            <p style="color:#21a366;font-weight:600;margin:6px 0 12px;">{{pwd_s_msg}}</p>
+                        {% endif %}
+
+                        <form action="{% url 'change_password' %}" method="POST" style="flex:1;display:flex;flex-direction:column;">
+                            {% csrf_token %}
+<div class="pgc-fg-grid">
+                                <div class="pgc-fg pgc-fg-full">
+                                    <label>Current Password</label>
+                                    <div class="pwd-wrap">
+                                        <input type="password" name="current_password" required>
+                                        <i class="fas fa-eye pwd-eye" onclick="togglePwd(this)"></i>
+                                    </div>
+                                </div>
+                                <div class="pgc-fg">
+                                    <label>New Password</label>
+                                    <div class="pwd-wrap">
+                                        <input type="password" name="new_password" required>
+                                        <i class="fas fa-eye pwd-eye" onclick="togglePwd(this)"></i>
+                                    </div>
+                                </div>
+                                <div class="pgc-fg">
+                                    <label>Confirm New Password</label>
+                                    <div class="pwd-wrap">
+                                        <input type="password" name="confirm_password" required>
+                                        <i class="fas fa-eye pwd-eye" onclick="togglePwd(this)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="pgc-save-btn">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <style>
+        .pwd-wrap { position: relative; }
+        .pwd-wrap input { width: 100%; padding-right: 38px; box-sizing: border-box; }
+        .pwd-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #8a8a8a;
+            font-size: 0.9rem;
+        }
+        .pwd-eye:hover { color: #444; }
+        </style>
+        <script>
+        function togglePwd(icon) {
+            var input = icon.previousElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+        </script>

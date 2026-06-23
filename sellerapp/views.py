@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 import random
 from .models import *
 from customerapp.models import *
 from django.http import *
 from .utils import *
+from django.contrib.auth.hashers import make_password, check_password
 
 def register(request):
     if request.method == "POST":
@@ -12,16 +13,25 @@ def register(request):
         lastname = request.POST['lastname']
         email = request.POST['email']
         contectno = request.POST['contectno']
-        
 
-        l1 = ["85ds2", "fd898", "rf965", "tr894", "DS89", "FR789D"]
-        password = random.choice(l1) + email[3:7] + contectno[3:6]
+        # Generate a strong random password (instead of the old predictable scheme)
+        plain_password = generate_strong_password()
 
         uid = User.objects.create(
             email=email,
-            password=password,
+            password=make_password(plain_password),   # store HASH, never plain text
             role=role
         )
+
+        try:
+            myCustomMail(
+                "Welcome - Your Account Password",
+                "mail_template",    
+                email,
+                {'otp': plain_password}
+            )
+        except Exception:
+            pass
 
         if role == "seller":
             seller.objects.create(
@@ -114,10 +124,20 @@ def login(request):
             try:
                 uid = User.objects.get(email=email)
 
-                if uid.password == password:
+                password_ok = check_password(password, uid.password)
+
+                # Backward-compat: old accounts created before hashing was added
+                # still have a plain-text password. If it matches, accept it
+                # once and silently upgrade it to a proper hash.
+                if not password_ok and uid.password == password:
+                    password_ok = True
+                    uid.password = make_password(password)
+                    uid.save()
+
+                if password_ok:
 
                     request.session["email"] = email
-
+                    request.session.cycle_key()  # rotate session id on login (session fixation protection)
                     if uid.role == "seller":
                         sid = seller.objects.get(user_id=uid)
                         pid = product.objects.all()
@@ -164,9 +184,8 @@ def admin_panel(request):
 
 
 def logout(request):
-    if "email" in request.session:
-        del request.session["email"]
-    return HttpResponseRedirect("/seller/login")
+    request.session.flush()   # destroys session data + cycles session key
+    return HttpResponseRedirect("/seller/login/")
 
 
 def update_profile(request):
@@ -252,7 +271,7 @@ def edit_product(request, pid):
     sid = seller.objects.get(user_id=uid)
     all_products = product.objects.all() 
     
-    p = product.objects.get(id=pid)
+    p = get_object_or_404(product, id=pid)
 
     if request.method == "POST":
         p.product_name = request.POST['product_name']
@@ -280,7 +299,7 @@ def edit_product(request, pid):
 
 def delete_product(request, pid):   
     if "email" in request.session:
-        product.objects.get(id=pid).delete()
+        p = get_object_or_404(product, id=pid).delete()
         return redirect('admin_panel')
     return HttpResponseRedirect("/seller/login")
 
@@ -317,7 +336,17 @@ def reset_password(request):
         uid = User.objects.get(email = email)
 
         if otp == str(uid.otp) and newpassword == repassword:
-            uid.password = newpassword
+
+            ok, reason = is_strong_password(newpassword)
+            if not ok:
+                context = {
+                    'email': email,
+                    'e_msg': reason,
+                }
+                return render(request, "sellerapp/reset_password.html", context)
+
+            uid.password = make_password(newpassword)
+            uid.otp = None
             uid.save()
             context = {
                         's_msg' : "Password Change Succsessfully..!"
@@ -325,3 +354,58 @@ def reset_password(request):
             return render(request,"sellerapp/login.html",context)
 
     return render(request,"sellerapp/login.html")
+
+def change_password(request):
+    """
+    Lets a LOGGED-IN user (seller or customer) change their own password.
+    Requires current password + new password + confirm password.
+    """
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+
+    def role_context(extra=None):
+        ctx = {"uid": uid}
+        if uid.role == "seller":
+            ctx["sid"] = seller.objects.get(user_id=uid)
+            ctx["pid"] = product.objects.all()
+            ctx["active_nav"] = "editProfile"
+            template = "sellerapp/admin_panel.html"
+        else:
+            ctx["cid"] = customer.objects.get(user_id=uid)
+            ctx["pid"] = product.objects.all()
+            ctx["active_page"] = "edit"
+            template = "customerapp/customer_dashboard.html"
+        if extra:
+            ctx.update(extra)
+        return template, ctx
+
+    if request.method == "POST":
+        current_password = request.POST.get('current_password', '')
+        new_password = request.POST.get('new_password', '')
+        confirm_password = request.POST.get('confirm_password', '')
+
+        current_ok = check_password(current_password, uid.password) or uid.password == current_password
+
+        if not current_ok:
+            template, ctx = role_context({"pwd_e_msg": "Current password is incorrect."})
+            return render(request, template, ctx)
+
+        if new_password != confirm_password:
+            template, ctx = role_context({"pwd_e_msg": "New password and confirm password do not match."})
+            return render(request, template, ctx)
+
+        ok, reason = is_strong_password(new_password)
+        if not ok:
+            template, ctx = role_context({"pwd_e_msg": reason})
+            return render(request, template, ctx)
+
+        uid.password = make_password(new_password)
+        uid.save()
+
+        template, ctx = role_context({"pwd_s_msg": "Password changed successfully."})
+        return render(request, template, ctx)
+
+    template, ctx = role_context()
+    return render(request, template, ctx)

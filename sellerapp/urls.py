@@ -30,5 +30,6 @@ urlpatterns = [
     path('delete_product/<int:pid>/', delete_product, name='delete_product'),
     path('forgot_password/', forgot_password, name='forgot_password'),
     path('reset_password/', reset_password, name='reset_password'),
+    path('change_password/', change_password, name='change_password'),
 ]
 

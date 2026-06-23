@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1f#o7frdbpo^t6r2ji412^z$=e(=-8#i7_21tnd7@cv$p#kgg&'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-1f#o7frdbpo^t6r2ji412^z$=e(=-8#i7_21tnd7@cv$p#kgg&'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -126,3 +130,20 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'bhavyaaanjana@gmail.com'
 EMAIL_HOST_PASSWORD = 'inod bcep pasy fver'
 EMAIL_PORT = 587
+
+# =========================================================
+# PHASE 1 - SESSION PROTECTION
+# =========================================================
+
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_SECURE = os.environ.get('DJANGO_HTTPS', 'False') == 'True'
+CSRF_COOKIE_SECURE = os.environ.get('DJANGO_HTTPS', 'False') == 'True'
+
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1800
+SESSION_SAVE_EVERY_REQUEST = True

@@ -28,17 +28,17 @@
 </head>
 <body>
 
-<input type="radio" name="nav" id="nav-dashboard"      class="nav-radio" checked>
-<input type="radio" name="nav" id="nav-allProducts"    class="nav-radio">
-<input type="radio" name="nav" id="nav-addProduct"     class="nav-radio">
-<input type="radio" name="nav" id="nav-categories"     class="nav-radio">
-<input type="radio" name="nav" id="nav-addCategory"    class="nav-radio">
-<input type="radio" name="nav" id="nav-orders"         class="nav-radio">
-<input type="radio" name="nav" id="nav-users"          class="nav-radio">
-<input type="radio" name="nav" id="nav-payments"       class="nav-radio">
-<input type="radio" name="nav" id="nav-settings"       class="nav-radio">
-<input type="radio" name="nav" id="nav-adminProfile"   class="nav-radio">
-<input type="radio" name="nav" id="nav-editProfile"    class="nav-radio">
+<input type="radio" name="nav" id="nav-dashboard"      class="nav-radio" {% if not active_nav or active_nav == "dashboard" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-allProducts"    class="nav-radio" {% if active_nav == "allProducts" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-addProduct"     class="nav-radio" {% if active_nav == "addProduct" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-categories"     class="nav-radio" {% if active_nav == "categories" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-addCategory"    class="nav-radio" {% if active_nav == "addCategory" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-orders"         class="nav-radio" {% if active_nav == "orders" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-users"          class="nav-radio" {% if active_nav == "users" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-payments"       class="nav-radio" {% if active_nav == "payments" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-settings"       class="nav-radio" {% if active_nav == "settings" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-adminProfile"   class="nav-radio" {% if active_nav == "adminProfile" %}checked{% endif %}>
+<input type="radio" name="nav" id="nav-editProfile"    class="nav-radio" {% if active_nav == "editProfile" %}checked{% endif %}>
 
 {% for p in pid %}
 <input type="radio" name="nav" id="nav-product-{{p.id}}"  class="nav-radio">

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from sellerapp.models import User
 from django.http import HttpResponseRedirect
 from .models import *
@@ -22,9 +22,8 @@ def customer_dashboard(request):
     
     return HttpResponseRedirect("/seller/login")
 def logout(request):
-    if "email" in request.session:
-        del request.session["email"]
-    return HttpResponseRedirect("/seller/login")
+    request.session.flush()
+    return HttpResponseRedirect("/seller/login/")
 
 def edit_profile(request):
     if "email" in request.session:
@@ -42,7 +41,9 @@ def edit_profile(request):
             cid.save()
 
             context = {
-                "cid": cid
+                "uid": uid,
+                "cid": cid,
+                "pid": product.objects.all(),
             }
 
             return render(request, "customerapp/customer_dashboard.html", context)
@@ -68,7 +69,7 @@ def add_to_cart(request,pk):
     uid = User.objects.get(email = request.session['email'])
     if uid.role == "customer":
         cid = customer.objects.get(user_id = uid)
-        products = product.objects.get(id = pk)
+        products = get_object_or_404(product, id=pk)
 
         Cart_obj,is_created = cart.objects.get_or_create(customer = cid)
 
@@ -152,7 +153,7 @@ def increase_qty(request,pk):
         if uid.role == "customer":
             cid = customer.objects.get(user_id = uid)
             cart_obj = cart.objects.get(customer = cid)
-            cart_item = cartitem.objects.get(id=pk , cart=cart_obj)
+            cart_item = get_object_or_404(cartitem, id=pk, cart=cart_obj)
 
             cart_item.qty += 1
             cart_item.save()
@@ -165,7 +166,7 @@ def decrease_qty(request, pk):
         if uid.role == "customer":
             cid = customer.objects.get(user_id=uid)
             Cart_obj = cart.objects.get(customer=cid)
-            cart_item = cartitem.objects.get(id=pk, cart=Cart_obj)
+            cart_item = get_object_or_404(cartitem, id=pk, cart=Cart_obj)
 
             if cart_item.qty > 1:
                 cart_item.qty -= 1

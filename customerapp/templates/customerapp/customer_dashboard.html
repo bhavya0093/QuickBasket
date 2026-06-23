@@ -24,10 +24,10 @@
 
 <!-- ═══ CSS-ONLY NAVIGATION SYSTEM using hidden radio inputs ═══ -->
 <!-- These radio buttons control which page is visible -->
-<input type="radio" name="page" id="nav-home" class="page-radio" checked>
-<input type="radio" name="page" id="nav-cart" class="page-radio">
-<input type="radio" name="page" id="nav-profile" class="page-radio">
-<input type="radio" name="page" id="nav-edit" class="page-radio">
+<input type="radio" name="page" id="nav-home" class="page-radio" {% if not active_page or active_page == "home" %}checked{% endif %}>
+<input type="radio" name="page" id="nav-cart" class="page-radio" {% if active_page == "cart" %}checked{% endif %}>
+<input type="radio" name="page" id="nav-profile" class="page-radio" {% if active_page == "profile" %}checked{% endif %}>
+<input type="radio" name="page" id="nav-edit" class="page-radio" {% if active_page == "edit" %}checked{% endif %}>
 
 <!-- ═══ CATEGORY FILTER radios ═══ -->
 <input type="radio" name="cat" id="cat-all"     class="cat-radio" checked>
