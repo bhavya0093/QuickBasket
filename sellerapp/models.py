@@ -31,6 +31,19 @@ class seller(models.Model):
     def __str__(self):
         return self.firstname+" "+self.lastname
     
+class Category(models.Model):
+    category_name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    category_image = models.ImageField(upload_to='category_images/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.category_name
+    
 class product(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     product_name = models.CharField(max_length=50)
@@ -47,8 +60,3 @@ class product(models.Model):
     weight_unit = models.CharField(max_length=50)
     brand = models.CharField(max_length=30)
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name

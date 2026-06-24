@@ -95,7 +95,7 @@ def view_cart(request):
 
         if uid.role == "customer":
             cid = customer.objects.get(user_id=uid)
-            Cart_obj = cart.objects.get(customer=cid)
+            Cart_obj, created = cart.objects.get_or_create(customer=cid)
             item = cartitem.objects.filter(cart=Cart_obj)
 
             total_amount = 0
@@ -130,7 +130,7 @@ def checkout(request):
         uid = User.objects.get(email = request.session['email'])
         if uid.role == "customer":
             cid = customer.objects.get(user_id = uid)
-            Cart_obj = cart.objects.get (customer = cid)
+            Cart_obj, created = cart.objects.get_or_create(customer = cid)
             item = cartitem.objects.filter(cart=Cart_obj)
             
             total_amount = 0
@@ -152,7 +152,7 @@ def increase_qty(request,pk):
         uid = User.objects.get(email = request.session['email'])
         if uid.role == "customer":
             cid = customer.objects.get(user_id = uid)
-            cart_obj = cart.objects.get(customer = cid)
+            cart_obj, created = cart.objects.get_or_create(customer = cid)
             cart_item = get_object_or_404(cartitem, id=pk, cart=cart_obj)
 
             cart_item.qty += 1
@@ -165,7 +165,7 @@ def decrease_qty(request, pk):
         uid = User.objects.get(email=request.session['email'])
         if uid.role == "customer":
             cid = customer.objects.get(user_id=uid)
-            Cart_obj = cart.objects.get(customer=cid)
+            Cart_obj, created = cart.objects.get_or_create(customer=cid)
             cart_item = get_object_or_404(cartitem, id=pk, cart=Cart_obj)
 
             if cart_item.qty > 1:

@@ -122,7 +122,7 @@ def login(request):
 
             if cart_item:
 
-                Cart_obj = cart.objects.get(customer = cid)
+                Cart_obj = cart_filter.first()  
                 item = cartitem.objects.filter(cart=Cart_obj)
    
                 total_amount = 0
@@ -504,3 +504,220 @@ def resend_otp(request, email):
         "sellerapp/reset_password.html",
         context
     )
+
+# ═══════════════════════════════════════════════════════════════════════
+# PHASE 2 - CATEGORY MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════
+
+def view_categories(request):
+    """View all categories (Seller only)"""
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+    
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    sid = seller.objects.get(user_id=uid)
+    categories = Category.objects.all()
+    pid = product.objects.all()
+
+    context = {
+        "uid": uid,
+        "sid": sid,
+        "pid": pid,
+        "categories": categories,
+        "active_nav": "categories",
+    }
+    return render(request, "sellerapp/admin_panel.html", context)
+
+
+def add_category(request):
+    """Add new category (Seller only)"""
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+    
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    if request.method == "POST":
+        category_name = request.POST.get('category_name', '').strip()
+        description = request.POST.get('description', '').strip()
+
+        if not category_name:
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "e_msg": "❌ Category name is required.",
+                "active_nav": "addCategory",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        if Category.objects.filter(category_name__iexact=category_name).exists():
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "e_msg": "❌ Category already exists!",
+                "active_nav": "addCategory",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        try:
+            new_category = Category(
+                category_name=category_name,
+                description=description,
+            )
+
+            if "category_image" in request.FILES:
+                new_category.category_image = request.FILES['category_image']
+
+            new_category.save()
+
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "s_msg": "✅ Category added successfully!",
+                "active_nav": "categories",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        except Exception as e:
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "e_msg": f"❌ Error: {str(e)}",
+                "active_nav": "addCategory",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+    sid = seller.objects.get(user_id=uid)
+    pid = product.objects.all()
+    categories = Category.objects.all()
+
+    context = {
+        "uid": uid,
+        "sid": sid,
+        "pid": pid,
+        "categories": categories,
+        "active_nav": "addCategory",
+    }
+    return render(request, "sellerapp/admin_panel.html", context)
+
+
+def edit_category(request, cid):
+    """Edit category (Seller only)"""
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+    
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    try:
+        category = Category.objects.get(id=cid)
+    except Category.DoesNotExist:
+        return HttpResponseRedirect("/seller/admin_panel/")
+
+    if request.method == "POST":
+        category_name = request.POST.get('category_name', '').strip()
+        description = request.POST.get('description', '').strip()
+
+        if not category_name:
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "category": category,
+                "e_msg": "❌ Category name is required.",
+                "active_nav": "categories",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        if Category.objects.filter(category_name__iexact=category_name).exclude(id=cid).exists():
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "category": category,
+                "e_msg": "❌ Category name already exists!",
+                "active_nav": "categories",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        try:
+            category.category_name = category_name
+            category.description = description
+
+            if "category_image" in request.FILES:
+                category.category_image = request.FILES['category_image']
+
+            category.save()
+
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "s_msg": "✅ Category updated successfully!",
+                "active_nav": "categories",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+        except Exception as e:
+            context = {
+                "uid": uid,
+                "sid": seller.objects.get(user_id=uid),
+                "pid": product.objects.all(),
+                "categories": Category.objects.all(),
+                "category": category,
+                "e_msg": f"❌ Error: {str(e)}",
+                "active_nav": "categories",
+            }
+            return render(request, "sellerapp/admin_panel.html", context)
+
+    sid = seller.objects.get(user_id=uid)
+    pid = product.objects.all()
+    categories = Category.objects.all()
+
+    context = {
+        "uid": uid,
+        "sid": sid,
+        "pid": pid,
+        "categories": categories,
+        "category": category,
+        "active_nav": "categories",
+    }
+    return render(request, "sellerapp/admin_panel.html", context)
+
+
+def delete_category(request, cid):
+    """Delete category (Seller only)"""
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+    
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    try:
+        category = Category.objects.get(id=cid)
+        category.delete()
+    except Category.DoesNotExist:
+        pass
+
+    return HttpResponseRedirect("/seller/admin_panel/")

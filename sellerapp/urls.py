@@ -32,5 +32,9 @@ urlpatterns = [
     path('reset_password/', reset_password, name='reset_password'),
     path('change_password/', change_password, name='change_password'),
     path('resend-otp/<str:email>/',resend_otp,name='resend_otp'),
+    path('view_categories/', view_categories, name='view_categories'),
+    path('add_category/', add_category, name='add_category'),
+    path('edit_category/<int:cid>/', edit_category, name='edit_category'),
+    path('delete_category/<int:cid>/', delete_category, name='delete_category'),
 ]
 
