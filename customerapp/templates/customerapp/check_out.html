@@ -51,50 +51,63 @@
 
                   <div class="address-info">
 
-                      <div class="address-top">
 
-                          <strong>{{ a.fullname }}</strong>
+                    <div class="address-top">
 
-                          <span class="address-type">
-                              {{ a.address_type }}
-                          </span>
+    <div class="address-user">
 
-                      </div>
+        <h3>{{ a.fullname }}</h3>
 
-                      <p>{{ a.mobile }}</p>
+        <span class="address-mobile">
+            {{ a.mobile }}
+        </span>
 
-                      <p>
+    </div>
 
-                          {{ a.house_no }},
+    <span class="address-type">
+        {{ a.address_type }}
+    </span>
 
-                          {{ a.area }},
+</div>
 
-                          {{ a.landmark }}
+<div class="address-body">
 
-                      </p>
+    <p>
+        {{ a.house_no }}, {{ a.area }}
+        {% if a.landmark %}
+            , {{ a.landmark }}
+        {% endif %}
+    </p>
 
-                      <p>
+    <p>
+        {{ a.city }}, {{ a.state }} - {{ a.pincode }}
+    </p>
 
-                          {{ a.city }}
+</div>
 
-                          {{ a.state }}
+<div class="address-footer">
 
-                          -
+    {% if a.is_default %}
+        <span class="default-badge">
+            ✓ Default
+        </span>
+    {% else %}
+        <span></span>
+    {% endif %}
 
-                          {{ a.pincode }}
+    <div class="address-actions">
 
-                      </p>
+        <a href="{% url 'edit_address' a.id %}" class="edit-btn">
+            ✏️ Edit
+        </a>
 
-                      {% if a.is_default %}
+        <a href="{% url 'delete_address' a.id %}" class="delete-btn">
+            🗑 Delete
+        </a>
 
-                      <span class="default-badge">
+    </div>
 
-                          Default
-
-                      </span>
-
-                      {% endif %}
-
+</div>
                   </div>
 
               </label>

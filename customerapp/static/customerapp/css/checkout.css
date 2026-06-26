@@ -342,10 +342,12 @@ body {
 .address-card{
     display:flex;
     gap:16px;
-    padding:18px;
+    padding:18px 22px;
     border:2px solid #e2f4f7;
     border-radius:16px;
     cursor:pointer;
+    margin-bottom:15px;
+    border-radius:16px;
     background:#fff;
 }
 
@@ -354,12 +356,14 @@ body {
 }
 
 .address-info{
-    flex:1;
+    width:100%;
+    padding:0;
 }
 
 .address-top{
     display:flex;
     justify-content:space-between;
+    align-items:flex-start;
     margin-bottom:8px;
 }
 
@@ -498,4 +502,61 @@ body {
     width:380px;
     line-height:28px;
     margin-bottom:25px;
+}
+.address-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.edit-btn,
+.delete-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 18px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:all .25s ease;
+}
+
+.edit-btn{
+    background:#edf8ff;
+    color:#0ea5e9;
+    border:1px solid #bde5ff;
+}
+
+.edit-btn:hover{
+    background:#0ea5e9;
+    color:#fff;
+    border-color:#0ea5e9;
+}
+
+.delete-btn{
+    background:#fff1f2;
+    color:#ef4444;
+    border:1px solid #fecdd3;
+}
+
+.delete-btn:hover{
+    background:#ef4444;
+    color:#fff;
+    border-color:#ef4444;
+}
+
+.address-body{
+    margin:6px 0;
+}
+
+.address-body p{
+    margin:2px 0;
+    line-height:1.4;
+}
+.address-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
 }

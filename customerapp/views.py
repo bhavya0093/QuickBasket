@@ -241,3 +241,53 @@ def add_address(request):
         "customerapp/add_address.html",
         context
     )
+
+def delete_address(request, pk):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session["email"])
+    cid = customer.objects.get(user_id=uid)
+
+    address = get_object_or_404(
+        Address,
+        id=pk,
+        customer=cid
+    )
+
+    address.delete()
+
+    return HttpResponseRedirect("/checkout/")
+
+from django.shortcuts import get_object_or_404
+
+def edit_address(request, pk):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session['email'])
+    cid = customer.objects.get(user_id=uid)
+
+    address = get_object_or_404(Address, id=pk, customer=cid)
+
+    if request.method == "POST":
+
+        address.fullname = request.POST['fullname']
+        address.mobile = request.POST['mobile']
+        address.house_no = request.POST['house_no']
+        address.area = request.POST['area']
+        address.landmark = request.POST['landmark']
+        address.city = request.POST['city']
+        address.state = request.POST['state']
+        address.pincode = request.POST['pincode']
+        address.address_type = request.POST['address_type']
+
+        address.save()
+
+        return HttpResponseRedirect("/checkout/")
+
+    return render(request, "customerapp/address.html", {
+        "a": address
+    })
