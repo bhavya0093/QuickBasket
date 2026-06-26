@@ -24,7 +24,7 @@
                             {% for c in categories %}
 
                             <tr>
-                                <td>{{ c.id }}</td>
+                                <td>{{  forloop.counter }}</td>
                                 <td>{{ c.category_name }}</td>
                                 <td>{{ c.products.count }}</td>
 

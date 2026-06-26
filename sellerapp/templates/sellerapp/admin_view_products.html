@@ -1,89 +1,212 @@
-<!-- ALL / VIEW PRODUCTS -->
+<!-- ================= VIEW PRODUCTS ================= -->
+
 <div id="allProducts-section" class="content-section">
+
     <div class="all-products-container">
 
-    <div class="products-header">
-        <h2><i class="fas fa-eye"></i> View Products</h2>
-        <input
-            type="text"
-            id="productSearch"
-            placeholder="Search product..."
-            class="product-search">
-            </div>
+        <div class="products-header">
 
-    {% for c in categories %}
-
-    <h3 style="margin:30px 0 20px;color:#2563eb;">
-        {{ c.category_name }}
-    </h3>
-
-    <div class="all-products-grid">
-
-        {% for p in c.products.all %}
-
-        <div class="product-card-all">
-
-            <img src="{{ p.picture.url }}">
-
-            <div class="product-info-all">
-
-                <h4>{{ p.product_name }}</h4>
-
-                <div style="font-size:.75rem;color:#60a5fa;font-weight:700;">
-                    {{ c.category_name }}
-                </div>
-
-                <div class="product-price-all">
-                    Rs.{{ p.product_price }}
-                </div>
-
-                <div style="font-size:.75rem;color:#94a3b8;">
-                    Stock : {{ p.stock_qty }} Units
-                </div>
-
-                <label class="view-details-btn"
-                       for="nav-product-{{ p.id }}">
-                    <i class="fas fa-eye"></i>
-                    View Details
-                </label>
-
-            </div>
+            <h2>
+                <i class="fas fa-eye"></i>
+                View Products
+            </h2>
 
         </div>
 
-        {% empty %}
+        <!-- FILTER FORM -->
+        <div class="filter-navbar">
+            <form method="GET"
+                action="{% url 'view_product' %}"
+                class="filter-box">
 
-        <p style="color:#999">
-            No Products
-        </p>
+                <select name="category">
 
-        {% endfor %}
+                    <option value="">All Categories</option>
+
+                    {% for c in categories %}
+
+                    <option
+                        value="{{ c.id }}"
+                        {% if request.GET.category == c.id|stringformat:"s" %}
+                        selected
+                        {% endif %}>
+
+                        {{ c.category_name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <input
+                    type="number"
+                    name="min_price"
+                    placeholder="Min Price"
+                    value="{{ request.GET.min_price }}">
+
+                <input
+                    type="number"
+                    name="max_price"
+                    placeholder="Max Price"
+                    value="{{ request.GET.max_price }}">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="latest"
+                        value="1"
+                        {% if request.GET.latest %}
+                        checked
+                        {% endif %}>
+
+                    Latest
+
+                </label>
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="popular"
+                        value="1"
+                        {% if request.GET.popular %}
+                        checked
+                        {% endif %}>
+
+                    Popular
+
+                </label>
+
+                <button type="submit"
+                        class="filter-btn">
+
+                    Apply Filter
+
+                </button>
+
+                <a href="{% url 'view_product' %}"
+                class="reset-btn">
+
+                    Reset
+
+                </a>
+
+            </form>
+        </div>
+        <br>
+
+        <!-- PRODUCTS -->
+
+        <div class="all-products-grid">
+
+            {% for p in pid %}
+
+            <div class="product-card-all">
+
+                <img src="{{ p.picture.url }}"
+                     alt="{{ p.product_name }}">
+
+                <div class="product-info-all">
+
+                    <h4>{{ p.product_name }}</h4>
+
+                    <div
+                    style="font-size:12px;
+                    color:#3b82f6;
+                    font-weight:700;
+                    margin-bottom:6px;
+                    text-transform:uppercase;">
+
+                        {{ p.product_category.category_name }}
+
+                    </div>
+
+                    <div class="product-price-all">
+
+                        ₹{{ p.product_price }}
+
+                    </div>
+
+                    <div
+                    style="font-size:13px;
+                    color:#888;
+                    margin-bottom:10px;">
+
+                        Stock :
+                        {{ p.stock_qty }}
+
+                        Units
+
+                    </div>
+
+                    <label
+                        class="view-details-btn"
+                        for="nav-product-{{ p.id }}">
+
+                        <i class="fas fa-eye"></i>
+
+                        View Details
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div
+            style="width:100%;
+            text-align:center;
+            padding:50px;
+            color:#888;">
+
+                <i
+                class="fas fa-box-open"
+                style="font-size:60px;"></i>
+
+                <h3>No Products Found</h3>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
 
     </div>
 
-    {% endfor %}
-
-</div>
 </div>
 
 <script>
-document.getElementById("productSearch").addEventListener("keyup", function () {
 
-    let value = this.value.toLowerCase();
+const search=document.getElementById("productSearch");
 
-    let cards = document.querySelectorAll(".product-card-all");
+search.addEventListener("keyup",function(){
 
-    cards.forEach(function(card){
+let value=this.value.toLowerCase();
 
-        let text = card.innerText.toLowerCase();
+let cards=document.querySelectorAll(".product-card-all");
 
-        if(text.includes(value)){
-            card.style.display = "block";
-        }else{
-            card.style.display = "none";
-        }
+cards.forEach(function(card){
 
-    });
+let txt=card.innerText.toLowerCase();
+
+if(txt.indexOf(value)>-1){
+
+card.style.display="block";
+
+}
+
+else{
+
+card.style.display="none";
+
+}
 
 });
+
+});
+
 </script>

@@ -304,12 +304,35 @@ def view_product(request):
         uid = User.objects.get(email=request.session['email'])
         sid = seller.objects.get(user_id=uid)
 
+        category_id = request.GET.get("category")
+        min_price = request.GET.get("min_price")
+        max_price = request.GET.get("max_price")
+        latest = request.GET.get("latest")
+        popular = request.GET.get("popular")
+
+        products = product.objects.all()
+
+        if category_id:
+            products = products.filter(product_category_id=category_id)
+
+        if min_price:
+            products = products.filter(product_price__gte=min_price)
+
+        if max_price:
+            products = products.filter(product_price__lte=max_price)
+
+        if latest:
+            products = products.order_by("-created_at")
+
+        if popular:
+            products = products.order_by("-total_sold")
+
         context = {
             "uid": uid,
             "sid": sid,
-            "pid": product.objects.all(),
+            "pid": products,
             "categories": Category.objects.all().order_by("id"),
-            "active_nav": "viewProduct",
+            "active_nav": "allProducts",
         }
 
         return render(request, "sellerapp/admin_panel.html", context)

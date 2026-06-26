@@ -59,4 +59,9 @@ class product(models.Model):
     badge_text = models.CharField(max_length=50)
     weight_unit = models.CharField(max_length=50)
     brand = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_sold = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.product_name
 
