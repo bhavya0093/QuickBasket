@@ -1,32 +1,115 @@
-<h2>Add New Address</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Address</title>
 
-<form method="POST">
-    {% csrf_token %}
+    <link rel="stylesheet" href="{% static 'customerapp/css/address.css' %}">
+</head>
+<body>
 
-    <input type="text" name="fullname" placeholder="Full Name" required><br><br>
+<div class="address-container">
 
-    <input type="text" name="mobile" placeholder="Mobile Number" required><br><br>
+    <div class="address-card">
 
-    <input type="text" name="house_no" placeholder="House No / Flat No" required><br><br>
+        <h1 class="page-title">
+            Add New Address
+        </h1>
 
-    <input type="text" name="area" placeholder="Area / Street" required><br><br>
+        <p class="page-subtitle">
+            Enter your delivery address details
+        </p>
 
-    <input type="text" name="landmark" placeholder="Landmark"><br><br>
+        <form method="POST">
 
-    <input type="text" name="city" placeholder="City" required><br><br>
+            {% csrf_token %}
 
-    <input type="text" name="state" placeholder="State" required><br><br>
+            <div class="form-grid">
 
-    <input type="text" name="pincode" placeholder="Pincode" required><br><br>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="fullname" class="form-control" required>
+                </div>
 
-    <select name="address_type">
-        <option value="Home">Home</option>
-        <option value="Work">Work</option>
-        <option value="Other">Other</option>
-    </select>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="text" name="mobile" class="form-control" required>
+                </div>
 
-    <br><br>
+                <div class="form-group">
+                    <label>House / Flat No</label>
+                    <input type="text" name="house_no" class="form-control" required>
+                </div>
 
-    <button type="submit">Save Address</button>
+                <div class="form-group">
+                    <label>Area / Street</label>
+                    <input type="text" name="area" class="form-control" required>
+                </div>
 
-</form>
+                <div class="form-group full">
+                    <label>Landmark</label>
+                    <input type="text" name="landmark" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" name="state" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" name="pincode" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Address Type</label>
+
+                    <select name="address_type" class="form-control">
+
+                        <option value="Home">Home</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="checkbox-row">
+
+                <input type="checkbox"
+                       name="is_default"
+                       value="1">
+
+                <label>Set as Default Address</label>
+
+            </div>
+
+            <div class="button-group">
+
+                <a href="{% url 'checkout' %}" class="back-btn">
+                    ← Back
+                </a>
+
+                <button class="save-btn" type="submit">
+                    Save Address
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

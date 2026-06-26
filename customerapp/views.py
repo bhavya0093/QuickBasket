@@ -178,39 +178,66 @@ def decrease_qty(request, pk):
     return HttpResponseRedirect("/view_cart/")
 
 def add_address(request):
-    if "email" in request.session:
+
+    if "email" not in request.session:
         return HttpResponseRedirect("/seller/login/")
-    
-    uid = User.objects.get(email=request.session['email'])
-    
-    if uid.role == "customer":
-        cid = customer.objects.get(user_id=uid)
-        if request.method == "POST":
-            fullname = request.POST['fullname']
-            mobile = request.POST['mobile']
-            house_no = request.POST['house_no']
-            area = request.POST['area']
-            landmark = request.POST['landmark']
-            city = request.POST['city']
-            state = request.POST['state']
-            pincode = request.POST['pincode']
-            address_type = request.POST['address_type']
 
-            Address.objects.create(
-                customer=cid,
-                fullname=fullname,
-                mobile=mobile,
-                house_no=house_no,
-                area=area,
-                landmark=landmark,
-                city=city,
-                state=state,
-                pincode=pincode,
-                address_type=address_type
+    uid = User.objects.get(email=request.session["email"])
+
+    if uid.role != "customer":
+        return HttpResponseRedirect("/seller/login/")
+
+    cid = customer.objects.get(user_id=uid)
+
+    if request.method == "POST":
+
+        fullname = request.POST["fullname"]
+        mobile = request.POST["mobile"]
+        house_no = request.POST["house_no"]
+        area = request.POST["area"]
+        landmark = request.POST["landmark"]
+        city = request.POST["city"]
+        state = request.POST["state"]
+        pincode = request.POST["pincode"]
+        address_type = request.POST["address_type"]
+
+        is_default = request.POST.get("is_default")
+
+        if is_default:
+            Address.objects.filter(customer=cid).update(
+                is_default=False
             )
-        addresses = Address.objects.filter(customer=cid)
+        if Address.objects.filter(customer=cid).count() == 0:
+            is_default = True
+        else:
+            is_default = bool(is_default)
 
-        context = {
-            'addresses': addresses,
-        }
-        return render(request, "customerapp/address.html", context)
+        Address.objects.create(
+            customer=cid,
+            fullname=fullname,
+            mobile=mobile,
+            house_no=house_no,
+            area=area,
+            landmark=landmark,
+            city=city,
+            state=state,
+            pincode=pincode,
+            address_type=address_type,
+            is_default=is_default
+        )
+
+        return HttpResponseRedirect("/checkout/")
+
+    addresses = Address.objects.filter(customer=cid)
+
+    context = {
+        "addresses": addresses,
+        "cid": cid,
+        "uid": uid,
+    }
+
+    return render(
+        request,
+        "customerapp/add_address.html",
+        context
+    )
