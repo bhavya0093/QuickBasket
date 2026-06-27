@@ -22,6 +22,7 @@ def customer_dashboard(request):
         return render(request,"customerapp/customer_dashboard.html",context)
     
     return HttpResponseRedirect("/seller/login")
+
 def logout(request):
     request.session.flush()
     return HttpResponseRedirect("/seller/login/")
@@ -88,7 +89,6 @@ def add_to_cart(request,pk):
             cartItemData.save()
 
         return HttpResponseRedirect("/view_cart/")
-
     
 def view_cart(request):
     if "email" in request.session:
@@ -199,6 +199,7 @@ def payment(request):
     }
 
     return render(request, "customerapp/payment.html", context)
+
 def increase_qty(request,pk):
     if "email" in request.session:
         uid = User.objects.get(email = request.session['email'])
@@ -311,8 +312,6 @@ def delete_address(request, pk):
     messages.success(request,"Address Deleted Successfully.")
     return HttpResponseRedirect("/checkout/")
 
-from django.shortcuts import get_object_or_404
-
 def edit_address(request, pk):
 
     if "email" not in request.session:
@@ -356,3 +355,73 @@ def edit_address(request, pk):
     return render(request, "customerapp/edit_address.html", {
         "a": address
     })
+
+def place_order(request):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session["email"])
+    cid = customer.objects.get(user_id=uid)
+
+    if request.method == "POST":
+
+        payment_method = request.POST.get("payment")
+
+        address_id = request.session.get("address_id")
+
+        if not address_id:
+            messages.error(request, "Please select address.")
+            return HttpResponseRedirect("/checkout/")
+
+        address = get_object_or_404(Address, id=address_id)
+
+        cart_obj = cart.objects.get(customer=cid)
+        items = cartitem.objects.filter(cart=cart_obj)
+
+        total = 0
+
+        for i in items:
+            total += i.product.product_price * i.qty
+
+        discount = 65 if total >= 100 else 0
+
+        final = total - discount
+
+        order = Order.objects.create(
+            customer=cid,
+            address=address,
+            payment_method=payment_method,
+            total_amount=total,
+            discount=discount,
+            final_amount=final
+        )
+
+        for i in items:
+
+            OrderItem.objects.create(
+                order=order,
+                product=i.product,
+                quantity=i.qty,
+                price=i.product.product_price,
+                subtotal=i.product.product_price * i.qty
+            )
+
+        items.delete()
+
+        if "address_id" in request.session:
+            del request.session["address_id"]
+
+        messages.success(request, "Order Placed Successfully.")
+
+        return HttpResponseRedirect("/order_success/")
+
+def order_success(request):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    return render(request, "customerapp/order_success.html")
+
+def orders(request):
+    return render(request, "customerapp/order_success.html")

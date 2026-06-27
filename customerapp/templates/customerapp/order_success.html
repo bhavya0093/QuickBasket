@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+
+    <link rel="stylesheet" href="{% static 'customerapp/css/order_success.css' %}">
+</head>
+<body>
+
+<div class="success-card">
+
+    <div class="tick">
+        ✓
+    </div>
+
+    <h1>Order Placed Successfully</h1>
+
+    <p>
+        Thank you for shopping with <b>QuickBasket</b>.
+        Your order has been placed successfully.
+    </p>
+
+    <div class="btn-group">
+
+        <a  href="{% url 'customer_dashboard' %}" class="shop-btn">
+            Continue Shopping
+        </a>
+
+        <a href="{% url 'orders' %}"class="order-btn">
+            My Orders
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

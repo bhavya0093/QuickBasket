@@ -32,4 +32,7 @@ urlpatterns = [
     path("add_address/", views.add_address, name="add_address"),
     path("edit_address/<int:pk>/",views.edit_address,name="edit_address"),
     path("delete_address/<int:pk>/",views.delete_address,name="delete_address"),
+    path("place_order/", views.place_order, name="place_order"),
+    path("order_success/", views.order_success, name="order_success"),
+    path("orders/", views.orders, name="orders"),
 ]
