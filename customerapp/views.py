@@ -2,7 +2,8 @@ from django.shortcuts import render,get_object_or_404
 from sellerapp.models import User
 from django.http import HttpResponseRedirect
 from .models import *
-from customerapp.models import product, customer  
+from customerapp.models import product, customer
+from django.contrib import messages  
 
 def customer_dashboard(request):
 
@@ -225,7 +226,7 @@ def add_address(request):
             address_type=address_type,
             is_default=is_default
         )
-
+        messages.success(request,"New Address Added Successfully.")
         return HttpResponseRedirect("/checkout/")
 
     addresses = Address.objects.filter(customer=cid)
@@ -257,7 +258,7 @@ def delete_address(request, pk):
     )
 
     address.delete()
-
+    messages.success(request,"Address Deleted Successfully.")
     return HttpResponseRedirect("/checkout/")
 
 from django.shortcuts import get_object_or_404
@@ -284,10 +285,24 @@ def edit_address(request, pk):
         address.pincode = request.POST['pincode']
         address.address_type = request.POST['address_type']
 
-        address.save()
+        is_default = request.POST.get("is_default")
 
+        if is_default:
+
+            Address.objects.filter(customer=cid).update(
+                is_default=False
+            )
+
+            address.is_default = True
+
+        else:
+
+            address.is_default = False
+
+        address.save()
+        messages.success(request,"Address Updated Successfully.")
         return HttpResponseRedirect("/checkout/")
 
-    return render(request, "customerapp/address.html", {
+    return render(request, "customerapp/edit_address.html", {
         "a": address
     })

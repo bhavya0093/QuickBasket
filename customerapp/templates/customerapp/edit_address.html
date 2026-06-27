@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Address</title>
+
+    <link rel="stylesheet" href="{% static 'customerapp/css/address.css' %}">
+</head>
+<body>
+
+<div class="address-container">
+
+    <div class="address-card">
+
+        <h1 class="page-title">
+            Edit Address
+        </h1>
+
+        <p class="page-subtitle">
+            Update your delivery address details
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        name="fullname"
+                        class="form-control"
+                        value="{{ a.fullname }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input
+                        type="text"
+                        name="mobile"
+                        class="form-control"
+                        value="{{ a.mobile }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>House / Flat No</label>
+                    <input
+                        type="text"
+                        name="house_no"
+                        class="form-control"
+                        value="{{ a.house_no }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Area / Street</label>
+                    <input
+                        type="text"
+                        name="area"
+                        class="form-control"
+                        value="{{ a.area }}"
+                        required>
+                </div>
+
+                <div class="form-group full">
+                    <label>Landmark</label>
+                    <input
+                        type="text"
+                        name="landmark"
+                        class="form-control"
+                        value="{{ a.landmark }}">
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input
+                        type="text"
+                        name="city"
+                        class="form-control"
+                        value="{{ a.city }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>State</label>
+                    <input
+                        type="text"
+                        name="state"
+                        class="form-control"
+                        value="{{ a.state }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Pincode</label>
+                    <input
+                        type="text"
+                        name="pincode"
+                        class="form-control"
+                        value="{{ a.pincode }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Address Type</label>
+
+                    <select name="address_type" class="form-control">
+
+                        <option value="Home"
+                            {% if a.address_type == "Home" %}selected{% endif %}>
+                            Home
+                        </option>
+
+                        <option value="Work"
+                            {% if a.address_type == "Work" %}selected{% endif %}>
+                            Work
+                        </option>
+
+                        <option value="Other"
+                            {% if a.address_type == "Other" %}selected{% endif %}>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="checkbox-row">
+
+                <input
+                    type="checkbox"
+                    name="is_default"
+                    value="1"
+                    {% if a.is_default %}checked{% endif %}>
+
+                <label>Set as Default Address</label>
+
+            </div>
+
+            <div class="button-group">
+
+                <a href="{% url 'checkout' %}" class="back-btn">
+                    ← Cancel
+                </a>
+
+                <button class="save-btn" type="submit">
+                    <i class="fas fa-pen-to-square"></i>
+                    Update Address
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

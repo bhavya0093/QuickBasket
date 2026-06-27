@@ -163,3 +163,6 @@ select.form-control{
     text-align:center;
 }
 }
+.save-btn i{
+    margin-right:8px;
+}
