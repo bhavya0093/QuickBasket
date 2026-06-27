@@ -416,15 +416,35 @@ def place_order(request):
 
         return HttpResponseRedirect("/order_success/")
 
-def order_success(request):
+def orders(request):
 
     if "email" not in request.session:
         return HttpResponseRedirect("/seller/login/")
 
-    return render(request, "customerapp/order_success.html")
+    uid = User.objects.get(email=request.session["email"])
 
-def orders(request):
-    return render(request, "customerapp/orders.html")
+    if uid.role != "customer":
+        return HttpResponseRedirect("/seller/login/")
+
+    cid = customer.objects.get(user_id=uid)
+
+    orders = Order.objects.filter(
+        customer=cid
+    ).order_by("-order_date")
+
+    print("Orders =>", orders)
+    print("Count =>", orders.count())
+
+    context = {
+        "orders": orders
+    }
+
+    return render(
+        request,
+        "customerapp/orders.html",
+        context
+    )
+
 
 def place_order(request):
 
@@ -508,3 +528,13 @@ def place_order(request):
         return HttpResponseRedirect("/order_success/")
 
     return HttpResponseRedirect("/payment/")
+
+def order_success(request):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    return render(
+        request,
+        "customerapp/order_success.html"
+    )   

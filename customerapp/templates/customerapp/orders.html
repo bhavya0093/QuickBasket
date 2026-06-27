@@ -1,7 +1,17 @@
-
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
 
-<div class="orders-container">
+    <link rel="stylesheet" href="{% static 'customerapp/css/order.css' %}">
+</head>
+<body>
+
+
+    <div class="orders-container">
 
     <h2 class="page-title">
         My Orders
@@ -20,12 +30,12 @@
                 </h3>
 
                 <p>
-                    {{ o.created_at }}
+                    {{ o.order_date|date:"d M Y, h:i A" }}
                 </p>
 
             </div>
 
-            <span class="status">
+            <span class="status status-{{ o.status|lower }}">
                 {{ o.status }}
             </span>
 
@@ -33,7 +43,7 @@
 
         <hr>
 
-        {% for item in o.orderitem_set.all %}
+       {% for item in o.items.all %}
 
         <div class="product-row">
 
@@ -44,7 +54,7 @@
                 <h4>{{ item.product.product_name }}</h4>
 
                 <p>
-                    Qty : {{ item.qty }}
+                    Qty : {{ item.quantity }}
                 </p>
 
             </div>
@@ -73,13 +83,13 @@
 
             <div>
 
-                <a href="{% url 'order_details' o.id %}" class="view-btn">
+                <a href="#" class="view-btn">
                     View Details
                 </a>
 
                 {% if o.status == "Pending" %}
 
-                <a href="{% url 'cancel_order' o.id %}" class="cancel-btn">
+                <a href="#" class="cancel-btn">
                     Cancel
                 </a>
 
@@ -106,3 +116,6 @@
     {% endfor %}
 
 </div>
+
+</body>
+</html>
