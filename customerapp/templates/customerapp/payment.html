@@ -128,31 +128,32 @@
           <div class="summary-title">Order Summary</div>
 
           <!-- DUMMY ITEMS — Django ka loop yahan lagana -->
-          <div class="order-items">
-            <div class="order-item">
-              <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?w=80&q=80" alt="Bananas" class="order-item-img"/>
+         {% for c in item %}
+          <div class="order-item">
+              <img src="{{ c.product.picture.url }}" class="order-item-img">
+
               <div class="order-item-info">
-                <div class="order-item-name">Organic Bananas</div>
-                <div class="order-item-qty">Qty: 2</div>
+                  <div class="order-item-name">
+                      {{ c.product.product_name }}
+                  </div>
+
+                  <div class="order-item-qty">
+                      ₹{{ c.product.product_price }} × {{ c.qty }}
+                  </div>
               </div>
-              <div class="order-item-price">&#8377;98</div>
-            </div>
-            <div class="order-item">
-              <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=80&q=80" alt="Milk" class="order-item-img"/>
-              <div class="order-item-info">
-                <div class="order-item-name">Whole Milk</div>
-                <div class="order-item-qty">Qty: 1</div>
+
+              <div class="order-item-price">
+                  ₹{{ c.product.product_price|floatformat:0 }}
               </div>
-              <div class="order-item-price">&#8377;68</div>
-            </div>
           </div>
+          {% endfor %}
 
           <hr class="summary-hr"/>
-          <div class="summary-row"><span>Subtotal</span><span>&#8377;1700</span></div>
-          <div class="summary-row"><span>Discount <span class="disc-badge">WELCOME10</span></span><span class="green">-&#8377;65</span></div>
+          <div class="summary-row"><span>Subtotal</span><span>&#8377;{{ total_amount }}</span></div>
+          <div class="summary-row"><span>Discount <span class="disc-badge">WELCOME10</span></span><span class="green">-&#8377;{{ discount }}</span></div>
           <div class="summary-row"><span>Delivery</span><span class="green">FREE</span></div>
           <hr class="summary-hr"/>
-          <div class="total-row"><span>Total</span><span>&#8377;1635</span></div>
+          <div class="total-row"><span>Total</span><span>&#8377;{{ net_amount }}</span></div>
 
           <button type="submit" class="place-order-btn">Place Order 🎉</button>
           <div class="secure-note">🔒 100% Secure Checkout</div>
