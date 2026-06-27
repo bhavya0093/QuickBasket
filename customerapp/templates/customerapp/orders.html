@@ -11,11 +11,17 @@
 <body>
 
 
-    <div class="orders-container">
+    <div class="page-header">
 
-    <h2 class="page-title">
-        My Orders
-    </h2>
+        <h1 class="page-title">
+            My Orders
+        </h1>
+
+        <a href="{% url 'customer_dashboard' %}" class="back-btn">
+            ← Continue Shopping
+        </a>
+
+    </div>
 
     {% for o in orders %}
 
@@ -69,35 +75,21 @@
 
         <hr>
 
-        <div class="order-bottom">
+       <div class="order-bottom">
 
-            <div>
+    <div class="total">
+        Total : <span>₹{{ o.total_amount }}</span>
+    </div>
 
-                <strong>
-                    Total :
-                </strong>
+    <div>
+        <a href="#" class="view-btn">View Details</a>
 
-                ₹{{ o.total_amount }}
+        {% if o.status == "Pending" %}
+        <a href="#" class="cancel-btn">Cancel</a>
+        {% endif %}
+    </div>
 
-            </div>
-
-            <div>
-
-                <a href="#" class="view-btn">
-                    View Details
-                </a>
-
-                {% if o.status == "Pending" %}
-
-                <a href="#" class="cancel-btn">
-                    Cancel
-                </a>
-
-                {% endif %}
-
-            </div>
-
-        </div>
+</div>
 
     </div>
 

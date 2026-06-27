@@ -9,41 +9,65 @@
 
 body{
     background:#eefbfc;
-    padding:40px 20px;
+    padding:30px 15px;
 }
 
 .orders-container{
-    max-width:1100px;
+    max-width:1180px;
     margin:auto;
 }
 
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
 .page-title{
-    font-size:36px;
+    font-size:42px;
     font-weight:800;
     color:#083b54;
-    margin-bottom:30px;
+}
+
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    border:2px solid #13bfd2;
+    border-radius:50px;
+    text-decoration:none;
+    color:#13bfd2;
+    font-weight:700;
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#13bfd2;
+    color:#fff;
 }
 
 .order-card{
     background:#fff;
-    border-radius:22px;
-    padding:25px;
-    margin-bottom:30px;
-    border:1px solid #d9f4f6;
-    box-shadow:0 10px 30px rgba(0,170,190,.08);
+    border-radius:18px;
+    padding:20px 25px;
+    margin-bottom:20px;
+    border:1px solid #d8eef1;
+    box-shadow:0 8px 20px rgba(0,170,190,.08);
 }
 
 .order-top{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
+    align-items:flex-start;
+    margin-bottom:15px;
 }
 
 .order-top h3{
-    font-size:24px;
+    font-size:20px;
     color:#083b54;
-    margin-bottom:8px;
+    margin-bottom:5px;
 }
 
 .order-top p{
@@ -52,7 +76,7 @@ body{
 }
 
 .status{
-    padding:8px 18px;
+    padding:7px 18px;
     border-radius:50px;
     font-size:13px;
     font-weight:700;
@@ -91,17 +115,18 @@ body{
 .product-row{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    gap:20px;
-    padding:18px 0;
+    gap:18px;
+    padding:16px 0;
 }
 
 .product-row img{
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:14px;
-    border:1px solid #d8eef1;
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    border:1px solid #d9eef3;
+    border-radius:12px;
+    background:#fff;
+    padding:5px;
 }
 
 .product-row>div{
@@ -109,39 +134,44 @@ body{
 }
 
 .product-row h4{
+    font-size:22px;
     color:#083b54;
-    font-size:18px;
-    margin-bottom:6px;
+    margin-bottom:5px;
 }
 
 .product-row p{
-    color:#6d8895;
     font-size:15px;
+    color:#6d8895;
 }
 
 .product-row strong{
-    color:#0aa7b7;
-    font-size:20px;
+    font-size:18px;
+    color:#08a7be;
 }
 
 .order-bottom{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-top:20px;
+    padding-top:15px;
 }
 
-.order-bottom strong{
-    font-size:20px;
+.total{
+    font-size:18px;
+    font-weight:700;
     color:#083b54;
+}
+
+.total span{
+    color:#111;
 }
 
 .view-btn,
 .cancel-btn{
     display:inline-block;
-    padding:12px 24px;
-    border-radius:50px;
     text-decoration:none;
+    padding:11px 22px;
+    border-radius:40px;
     font-weight:700;
     transition:.3s;
 }
@@ -153,11 +183,11 @@ body{
 }
 
 .view-btn:hover{
-    background:#099ead;
+    background:#099eae;
 }
 
 .cancel-btn{
-    background:#fff0f0;
+    background:#fff4f4;
     color:#e53935;
     border:1px solid #ffbcbc;
 }
@@ -169,10 +199,10 @@ body{
 
 .empty-order{
     background:#fff;
-    padding:70px 30px;
-    text-align:center;
+    padding:60px 30px;
     border-radius:20px;
-    box-shadow:0 10px 25px rgba(0,170,190,.08);
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,170,190,.08);
 }
 
 .empty-order h3{
@@ -183,11 +213,11 @@ body{
 
 .empty-order a{
     display:inline-block;
-    padding:14px 30px;
-    border-radius:50px;
+    padding:12px 28px;
     background:#10bfd1;
     color:#fff;
     text-decoration:none;
+    border-radius:40px;
     font-weight:700;
 }
 
@@ -198,11 +228,19 @@ hr{
 
 @media(max-width:768px){
 
-.order-top,
-.order-bottom{
+.page-header{
     flex-direction:column;
     align-items:flex-start;
-    gap:18px;
+    gap:15px;
+}
+
+.page-title{
+    font-size:32px;
+}
+
+.order-top{
+    flex-direction:column;
+    gap:12px;
 }
 
 .product-row{
@@ -211,14 +249,20 @@ hr{
 }
 
 .product-row img{
-    width:100%;
-    height:220px;
+    width:90px;
+    height:90px;
+}
+
+.order-bottom{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
 }
 
 .view-btn,
 .cancel-btn{
     width:100%;
     text-align:center;
-    margin-bottom:10px;
+    margin:0 0 10px;
 }
 }
