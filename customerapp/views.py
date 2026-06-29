@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from .models import *
 from customerapp.models import product, customer
 from django.contrib import messages
+import uuid
 
 def customer_dashboard(request):
 
@@ -396,6 +397,21 @@ def place_order(request):
             discount=discount,
             final_amount=final
         )
+        Payment.objects.create(
+
+                order=order,
+
+                payment_id="PAY" + uuid.uuid4().hex[:10].upper(),
+
+                transaction_id=uuid.uuid4().hex[:16].upper(),
+
+                amount=final,
+
+                method=payment,
+
+                status="Pending" if payment == "COD" else "Paid"
+
+            )
 
         for i in items:
 
@@ -502,6 +518,15 @@ def place_order(request):
 
             status="Pending"
 
+        )
+
+        Payment.objects.create(
+            order=order,
+            payment_id="PAY" + uuid.uuid4().hex[:10].upper(),
+            transaction_id=uuid.uuid4().hex[:16].upper(),
+            amount=final,
+            method=payment,
+            status="Pending" if payment == "COD" else "Paid"
         )
 
         for i in items:

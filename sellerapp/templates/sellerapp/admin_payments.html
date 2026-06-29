@@ -5,52 +5,42 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>Payment ID</th><th>Order ID</th><th>Customer</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
-                       <tbody>
+<tbody>
 
 {% for p in payments %}
 
 <tr>
 
     <td>
-        PAY{{ p.id|stringformat:"04d" }}
+        {{ p.payment_id }}
     </td>
 
     <td>
-        #ORD{{ p.id }}
+        #ORD{{ p.order.id }}
     </td>
 
     <td>
-        {{ p.customer.firstname }}
-        {{ p.customer.lastname }}
+        {{ p.order.customer.firstname }}
+        {{ p.order.customer.lastname }}
     </td>
 
     <td>
-        ₹{{ p.final_amount }}
+        ₹{{ p.amount }}
     </td>
 
     <td>
-        {{ p.payment_method }}
+        {{ p.method }}
     </td>
 
     <td>
-        {{ p.order_date|date:"d M Y" }}
+        {{ p.payment_date|date:"d M Y" }}
     </td>
 
     <td>
 
-        {% if p.payment_method == "COD" %}
-
-            <span class="status-badge status-unpaid">
-                Unpaid
-            </span>
-
-        {% else %}
-
-            <span class="status-badge status-paid">
-                Paid
-            </span>
-
-        {% endif %}
+        <span class="status-badge status-{{ p.status|lower }}">
+            {{ p.status }}
+        </span>
 
     </td>
 
@@ -60,7 +50,7 @@
 
 <tr>
 
-    <td colspan="7" style="text-align:center;">
+    <td colspan="7" style="text-align:center;padding:25px;">
         No Payments Found
     </td>
 

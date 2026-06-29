@@ -389,3 +389,23 @@ tr:last-child td{border-bottom:none;}
     background:#ef4444;
     color:#fff;
 }
+
+.status-paid{
+    background:#d4edda;
+    color:#155724;
+}
+
+.status-pending{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-failed{
+    background:#f8d7da;
+    color:#721c24;
+}
+
+.status-refunded{
+    background:#d1ecf1;
+    color:#0c5460;
+}

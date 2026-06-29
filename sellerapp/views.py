@@ -214,13 +214,20 @@ def admin_panel(request):
             active_nav = request.GET.get("tab", "dashboard")
 
             context = {
+
                 "uid": uid,
                 "sid": sid,
+
                 "pid": product.objects.all(),
-                "categories": Category.objects.all().order_by("id"),
+
+                "categories": Category.objects.all(),
+
                 "orders": Order.objects.all().order_by("id"),
+
+                "payments": Payment.objects.all().order_by("-payment_date"),
+
                 "active_nav": active_nav,
-                "payment":Order.objects.all().order_by("-order_date")
+
             }
 
             return render(request, "sellerapp/admin_panel.html", context)
