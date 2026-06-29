@@ -220,6 +220,7 @@ def admin_panel(request):
                 "categories": Category.objects.all().order_by("id"),
                 "orders": Order.objects.all().order_by("id"),
                 "active_nav": active_nav,
+                "payment":Order.objects.all().order_by("-order_date")
             }
 
             return render(request, "sellerapp/admin_panel.html", context)

@@ -5,13 +5,70 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>Payment ID</th><th>Order ID</th><th>Customer</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr><td>PAY001</td><td>#ORD001</td><td>John Doe</td><td>Rs.1,234</td><td>UPI</td><td>2024-01-15</td><td><span class="status-badge status-paid">Paid</span></td></tr>
-                            <tr><td>PAY002</td><td>#ORD002</td><td>Jane Smith</td><td>Rs.2,345</td><td>Card</td><td>2024-01-16</td><td><span class="status-badge status-paid">Paid</span></td></tr>
-                            <tr><td>PAY003</td><td>#ORD003</td><td>Bob Wilson</td><td>Rs.58</td><td>Cash</td><td>2024-01-17</td><td><span class="status-badge status-unpaid">Unpaid</span></td></tr>
-                            <tr><td>PAY004</td><td>#ORD004</td><td>Alice Brown</td><td>Rs.120</td><td>UPI</td><td>2024-01-18</td><td><span class="status-badge status-paid">Paid</span></td></tr>
-                            <tr><td>PAY005</td><td>#ORD005</td><td>Charlie Davis</td><td>Rs.399</td><td>Card</td><td>2024-01-19</td><td><span class="status-badge status-paid">Paid</span></td></tr>
-                        </tbody>
+                       <tbody>
+
+{% for p in payments %}
+
+<tr>
+
+    <td>
+        PAY{{ p.id|stringformat:"04d" }}
+    </td>
+
+    <td>
+        #ORD{{ p.id }}
+    </td>
+
+    <td>
+        {{ p.customer.firstname }}
+        {{ p.customer.lastname }}
+    </td>
+
+    <td>
+        ₹{{ p.final_amount }}
+    </td>
+
+    <td>
+        {{ p.payment_method }}
+    </td>
+
+    <td>
+        {{ p.order_date|date:"d M Y" }}
+    </td>
+
+    <td>
+
+        {% if p.payment_method == "COD" %}
+
+            <span class="status-badge status-unpaid">
+                Unpaid
+            </span>
+
+        {% else %}
+
+            <span class="status-badge status-paid">
+                Paid
+            </span>
+
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+    <td colspan="7" style="text-align:center;">
+        No Payments Found
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
                     </table>
                 </div>
             </div>

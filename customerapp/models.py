@@ -128,3 +128,36 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.product_name
+    
+class Payment(models.Model):
+
+    STATUS = (
+        ("Pending", "Pending"),
+        ("Paid", "Paid"),
+        ("Failed", "Failed"),
+        ("Refunded", "Refunded"),
+    )
+
+    METHOD = (
+        ("UPI", "UPI"),
+        ("CARD", "CARD"),
+        ("COD", "Cash On Delivery"),
+    )
+
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+
+    payment_id = models.CharField(max_length=100, unique=True)
+
+    transaction_id = models.CharField(max_length=150, blank=True, null=True)
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    method = models.CharField(max_length=20, choices=METHOD)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="Pending"
+    )
+
+    payment_date = models.DateTimeField(auto_now_add=True) 
