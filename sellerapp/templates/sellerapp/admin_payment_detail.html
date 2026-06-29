@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Payment Details</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin_payment_details.css' %}">
+
+</head>
+
+<div class="container">
+
+    <a href="{% url 'admin_panel' %}?tab=payments" class="back-btn">
+        ← Back to Payments
+    </a>
+
+    <h1 class="page-title">
+        {{ payment.payment_id }}
+    </h1>
+
+    <div class="card">
+
+        <h3 class="card-title">
+            Payment Details
+        </h3>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+                <span>Order</span>
+                <strong>#ORD{{ payment.order.id }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Customer</span>
+                <strong>{{ payment.order.customer.firstname }} {{ payment.order.customer.lastname }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Amount</span>
+                <strong>₹{{ payment.amount }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Method</span>
+                <strong>{{ payment.method }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Transaction ID</span>
+                <strong>{{ payment.transaction_id }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Status</span>
+
+                <span class="status-badge status-{{ payment.status|lower }}">
+                    {{ payment.status }}
+                </span>
+
+            </div>
+
+            <div class="info-box">
+                <span>Date</span>
+                <strong>{{ payment.payment_date|date:"d M Y, h:i A" }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</html>

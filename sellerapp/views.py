@@ -824,3 +824,29 @@ def update_order_status(request, pk):
             order.save()
 
     return redirect("admin_order_details", pk=pk)
+
+def admin_payment_details(request, pk):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session["email"])
+
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    sid = seller.objects.get(user_id=uid)
+
+    payment = get_object_or_404(Payment, id=pk)
+
+    context = {
+        "uid": uid,
+        "sid": sid,
+        "payment": payment,
+    }
+
+    return render(
+        request,
+        "sellerapp/admin_payment_detail.html",
+        context
+    )
