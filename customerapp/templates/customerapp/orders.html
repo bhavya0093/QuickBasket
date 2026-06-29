@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="{% static 'customerapp/css/order.css' %}">
 </head>
 <body>
+        {% if messages %}
 
+        {% for message in messages %}
+
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
 
     <div class="page-header">
 
@@ -86,7 +96,7 @@
             View Details
         </a>
         {% if o.status == "Pending" %}
-        <a href="#" class="cancel-btn">Cancel</a>
+        <a href="{% url 'cancel_order' o.id %}" class="cancel-btn" onclick="return confirmCancel();">Cancel</a>
         {% endif %}
     </div>
 
@@ -109,6 +119,16 @@
     {% endfor %}
 
 </div>
+<script>
 
+function confirmCancel(){
+
+    return confirm(
+        "Are you sure you want to cancel this order?"
+    );
+
+}
+
+</script>
 </body>
 </html>

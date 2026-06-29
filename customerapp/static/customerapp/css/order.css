@@ -266,3 +266,21 @@ hr{
     margin:0 0 10px;
 }
 }
+.alert{
+    padding:15px 20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    font-weight:600;
+}
+
+.success{
+    background:#d4edda;
+    color:#155724;
+    border:1px solid #b8dfc1;
+}
+
+.error{
+    background:#f8d7da;
+    color:#721c24;
+    border:1px solid #f3b6be;
+}

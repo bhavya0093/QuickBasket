@@ -1,9 +1,9 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from sellerapp.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect 
 from .models import *
 from customerapp.models import product, customer
-from django.contrib import messages  
+from django.contrib import messages
 
 def customer_dashboard(request):
 
@@ -566,3 +566,28 @@ def order_details(request, pk):
         "customerapp/order_details.html",
         context
     )
+
+def cancel_order(request, pk):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session["email"])
+    cid = customer.objects.get(user_id=uid)
+
+    order = get_object_or_404(
+        Order,
+        id=pk,
+        customer=cid
+    )
+
+    if order.status != "Pending":
+        messages.error(request, "This order cannot be cancelled.")
+        return redirect("orders")
+
+    order.status = "Cancelled"
+    order.save()
+
+    messages.success(request, "Order Cancelled Successfully.")
+
+    return redirect("orders")
