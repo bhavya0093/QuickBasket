@@ -42,15 +42,56 @@
                 <strong>{{ order.payment_method }}</strong>
             </div>
 
-         <div class="info-box">
-            <span>Status</span>
+<div class="info-box">
 
-            <strong>
-                <span class="status-badge status-{{ order.status|lower }}">
-                    {{ order.status }}
-                </span>
-            </strong>
+    <span>Status</span>
+
+    {% if order.status == "Cancelled" or order.status == "Delivered" %}
+
+        <div style="margin-top:10px;">
+            <span class="status-badge status-{{ order.status|lower }}">
+                {{ order.status }}
+            </span>
         </div>
+
+    {% else %}
+
+        <form action="{% url 'update_order_status' order.id %}" method="POST">
+
+            {% csrf_token %}
+
+          <select name="status" class="status-select">
+
+            {% if order.status == "Pending" %}
+                <option value="Pending" selected>Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+
+            {% elif order.status == "Confirmed" %}
+                <option value="Confirmed" selected>Confirmed</option>
+                <option value="Packed">Packed</option>
+
+            {% elif order.status == "Packed" %}
+                <option value="Packed" selected>Packed</option>
+                <option value="Shipped">Shipped</option>
+
+            {% elif order.status == "Shipped" %}
+                <option value="Shipped" selected>Shipped</option>
+                <option value="Delivered">Delivered</option>
+
+            {% endif %}
+
+            </select>
+
+            <button type="submit" class="update-btn">
+                Update Status
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
 
         </div>
 

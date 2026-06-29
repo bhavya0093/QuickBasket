@@ -38,5 +38,6 @@ urlpatterns = [
     path('delete_category/<int:cid>/', delete_category, name='delete_category'),
     path("admin_orders/",admin_orders,name="admin_orders"),
     path("admin_order_details/<int:pk>/",admin_order_details,name="admin_order_details"),
+    path("update_order_status/<int:pk>/",update_order_status,name="update_order_status",),
 ]
 

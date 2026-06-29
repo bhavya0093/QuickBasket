@@ -218,7 +218,7 @@ def admin_panel(request):
                 "sid": sid,
                 "pid": product.objects.all(),
                 "categories": Category.objects.all().order_by("id"),
-                "orders": Order.objects.all().order_by("-id"),
+                "orders": Order.objects.all().order_by("id"),
                 "active_nav": active_nav,
             }
 
@@ -756,7 +756,7 @@ def admin_orders(request):
     if uid.role != "seller":
         return HttpResponseRedirect("/seller/login/")
 
-    orders = Order.objects.all().order_by("-order_date")
+    orders = Order.objects.all().order_by("id")
 
     context = {
         "orders": orders
@@ -793,3 +793,26 @@ def admin_order_details(request, pk):
         "sellerapp/admin_order_detail.html",
         context
     )
+
+def update_order_status(request, pk):
+
+    order = Order.objects.get(id=pk)
+
+    if request.method == "POST":
+
+        new_status = request.POST["status"]
+
+        allowed = {
+            "Pending": ["Confirmed", "Cancelled"],
+            "Confirmed": ["Packed"],
+            "Packed": ["Shipped"],
+            "Shipped": ["Delivered"],
+            "Delivered": [],
+            "Cancelled": [],
+        }
+
+        if new_status in allowed.get(order.status, []):
+            order.status = new_status
+            order.save()
+
+    return redirect("admin_order_details", pk=pk)
