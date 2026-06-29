@@ -212,12 +212,17 @@ def admin_panel(request):
             sid = seller.objects.get(user_id=uid)
 
             context = {
-                "uid": uid,
-                "sid": sid,
-                "pid": product.objects.all(),
-                "categories": Category.objects.all().order_by("id"),
-                "active_nav": "dashboard",
-            }
+                    "uid": uid,
+                    "sid": sid,
+
+                    "pid": product.objects.all(),
+
+                    "categories": Category.objects.all().order_by("id"),
+
+                    "orders": Order.objects.all().order_by("-order_date"),
+
+                    "active_nav": "dashboard",
+                }
 
             return render(request, "sellerapp/admin_panel.html", context)
 
@@ -742,3 +747,25 @@ def delete_category(request, cid):
         pass
 
     return redirect("view_categories")
+
+def admin_orders(request):
+
+    if "email" not in request.session:
+        return HttpResponseRedirect("/seller/login/")
+
+    uid = User.objects.get(email=request.session["email"])
+
+    if uid.role != "seller":
+        return HttpResponseRedirect("/seller/login/")
+
+    orders = Order.objects.all().order_by("-order_date")
+
+    context = {
+        "orders": orders
+    }
+
+    return render(
+        request,
+        "sellerapp/admin_orders.html",
+        context
+    )

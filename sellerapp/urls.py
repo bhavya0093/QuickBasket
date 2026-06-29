@@ -36,5 +36,6 @@ urlpatterns = [
     path('add_category/', add_category, name='add_category'),
     path('edit_category/<int:cid>/', edit_category, name='edit_category'),
     path('delete_category/<int:cid>/', delete_category, name='delete_category'),
+    path("admin_orders/",admin_orders,name="admin_orders"),
 ]
 
