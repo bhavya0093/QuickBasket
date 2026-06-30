@@ -240,6 +240,8 @@ def admin_panel(request):
             
             delivered_orders = Order.objects.filter(status="Delivered").count()
 
+            recent_users = customer.objects.select_related("user_id").order_by("-id")[:5]
+
             sales_data = [12000,18000,15000,25000,32000,27000]
 
             status_data = [
@@ -274,6 +276,7 @@ def admin_panel(request):
                 "recent_users": recent_users,
                 "sales_data": sales_data,
                 "status_data": status_data,
+                "recent_users": recent_users,
             }
 
             return render(request, "sellerapp/admin_panel.html", context)

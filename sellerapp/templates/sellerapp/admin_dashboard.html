@@ -138,13 +138,23 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr><td>1</td><td>John Doe</td><td>john@example.com</td><td><span class="user-role">User</span></td><td><span class="status-badge status-active">Active</span></td></tr>
-                            <tr><td>2</td><td>Jane Smith</td><td>jane@example.com</td><td><span class="user-role">Manager</span></td><td><span class="status-badge status-active">Active</span></td></tr>
-                            <tr><td>3</td><td>Bob Wilson</td><td>bob@example.com</td><td><span class="user-role">User</span></td><td><span class="status-badge status-inactive">Inactive</span></td></tr>
-                            <tr><td>4</td><td>Alice Brown</td><td>alice@example.com</td><td><span class="user-role">Admin</span></td><td><span class="status-badge status-active">Active</span></td></tr>
-                            <tr><td>5</td><td>Charlie Davis</td><td>charlie@example.com</td><td><span class="user-role">User</span></td><td><span class="status-badge status-active">Active</span></td></tr>
-                        </tbody>
+                       {% for u in recent_users %}
+<tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.firstname }} {{ u.lastname }}</td>
+    <td>{{ u.user_id.email }}</td>
+    <td>
+        <span class="user-role">
+            {{ u.user_id.role }}
+        </span>
+    </td>
+    <td>
+        <span class="status-badge status-active">
+            Active
+        </span>
+    </td>
+</tr>
+{% endfor %}
                     </table>
                 </div>
             </div>
