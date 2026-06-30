@@ -238,6 +238,15 @@ def admin_panel(request):
             
             total_revenue = Order.objects.filter(status="Delivered").aggregate(Sum("final_amount"))["final_amount__sum"] or 0
             
+            delivered_orders = Order.objects.filter(status="Delivered").count()
+
+            sales_data = [12000,18000,15000,25000,32000,27000]
+
+            status_data = [
+                pending_orders,
+                cancelled_orders,
+                delivered_orders,
+            ]
             context = {
 
                 "uid": uid,
@@ -263,6 +272,8 @@ def admin_panel(request):
                 "total_payments": total_payments,   
                 "recent_orders": recent_orders,
                 "recent_users": recent_users,
+                "sales_data": sales_data,
+                "status_data": status_data,
             }
 
             return render(request, "sellerapp/admin_panel.html", context)

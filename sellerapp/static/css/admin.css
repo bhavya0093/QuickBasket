@@ -455,3 +455,22 @@ tr:last-child td{border-bottom:none;}
     background:#d1ecf1;
     color:#0c5460;
 }
+.charts-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-top:25px;
+}
+
+.charts-grid canvas{
+    width:100% !important;
+    height:350px !important;
+}
+
+@media(max-width:900px){
+
+.charts-grid{
+    grid-template-columns:1fr;
+}
+
+}

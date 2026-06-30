@@ -148,4 +148,64 @@
                     </table>
                 </div>
             </div>
+            <div class="charts-grid">
+
+    <div class="form-container">
+
+        <div class="form-title">
+            <h3>Monthly Revenue</h3>
         </div>
+
+        <canvas id="salesChart"></canvas>
+
+    </div>
+
+    <div class="form-container">
+
+        <div class="form-title">
+            <h3>Order Status</h3>
+        </div>
+
+        <canvas id="statusChart"></canvas>
+
+    </div>
+
+</div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            const salesCanvas = document.getElementById("salesChart");
+
+            if (salesCanvas) {
+                new Chart(salesCanvas, {
+                    type: "line",
+                    data: {
+                        labels: ["Jan","Feb","Mar","Apr","May","Jun"],
+                        datasets: [{
+                            label: "Revenue",
+                            data: {{ sales_data|safe }},
+                            borderColor: "#3b82f6",
+                            backgroundColor: "rgba(59,130,246,.2)",
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    }
+                });
+            }
+
+            const statusCanvas = document.getElementById("statusChart");
+
+            if (statusCanvas) {
+                new Chart(statusCanvas, {
+                    type: "doughnut",
+                    data: {
+                        labels: ["Pending","Cancelled","Delivered"],
+                        datasets: [{
+                            data: {{ status_data|safe }},
+                            backgroundColor: ["#f59e0b","#ef4444","#22c55e"]
+                        }]
+                    }
+                });
+            }
+</script>
