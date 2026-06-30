@@ -257,7 +257,16 @@ def admin_panel(request):
             total_categories = Category.objects.count()
             total_customers = customer.objects.count()
             total_orders = Order.objects.count()
+            orders = Order.objects.all().order_by("-id")
 
+            search = request.GET.get("search")
+            status = request.GET.get("status")
+
+            if search:
+                orders = orders.filter(id__icontains=search)
+
+            if status:
+                orders = orders.filter(status=status)
             pending_orders = Order.objects.filter(status="Pending").count()
             cancelled_orders = Order.objects.filter(status="Cancelled").count()
             delivered_orders = Order.objects.filter(status="Delivered").count()
@@ -310,7 +319,7 @@ def admin_panel(request):
                 "recent_orders": recent_orders,
                 "recent_users": recent_users,
                 "recent_notifications": recent_notifications,
-
+                "orders": orders,
                 "sales_data": sales_data,
                 "status_data": status_data,
                 "low_stock_products": low_stock_products,
@@ -937,3 +946,33 @@ def admin_payment_details(request, pk):
         "sellerapp/admin_payment_detail.html",
         context
     )
+
+def update_order_status(request, pk):
+
+    order = get_object_or_404(Order, id=pk)
+
+    if request.method == "POST":
+
+        new_status = request.POST.get("status")
+
+        order.status = new_status
+        order.save()
+
+        # Payment Auto Update
+
+        if hasattr(order, "payment"):
+
+            if new_status == "Delivered":
+                order.payment.status = "Paid"
+
+            elif new_status == "Cancelled":
+                order.payment.status = "Refunded"
+
+            else:
+                order.payment.status = "Pending"
+
+            order.payment.save()
+
+        return redirect("/seller/admin_panel/?tab=orders")
+
+    return redirect("/seller/admin_panel/?tab=orders")
