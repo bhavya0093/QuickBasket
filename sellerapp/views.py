@@ -401,8 +401,8 @@ def add_product(request):
                 product_category=category,
                 product_price=int(request.POST.get('product_price') or 0),
                 stock_qty=int(request.POST.get('stock_qty') or 0),
-                picture=request.FILES['picture'],
-                description=request.POST.get('description'),
+                picture=request.FILES.get("picture"),   
+                description=request.POST.get("description", ""),
                 discount=int(request.POST.get('discount') or 0),
                 badge_text=request.POST.get('badge_text'),
                 weight_unit=request.POST.get('weight_unit'),
@@ -433,9 +433,9 @@ def add_product(request):
 
                 flavour=request.POST.get("flavour"),
 
-                is_featured=bool(request.POST.get("is_featured")),
+                is_featured="is_featured" in request.POST,
 
-                is_ai_recommended=bool(request.POST.get("is_ai_recommended")),
+                is_ai_recommended="is_ai_recommended" in request.POST,
             )
 
             messages.success(request, "Product Added Successfully")
@@ -501,24 +501,27 @@ def edit_product(request, pid):
         return HttpResponseRedirect("/seller/login")
 
     uid = User.objects.get(email=request.session['email'])
-    category = Category.objects.get(id=request.POST["product_category"])
+
     sid = seller.objects.get(user_id=uid)
     all_products = product.objects.all() 
     
     p = get_object_or_404(product, id=pid)
 
     if request.method == "POST":
+        category = Category.objects.get(
+        id=request.POST["product_category"]
+        )
+
         p.product_name = request.POST['product_name']
-        p.product_category = request.POST['product_category']
         p.product_price = request.POST['product_price']
         p.stock_qty = request.POST['stock_qty']
         p.discount = request.POST['discount']
         p.badge_text = request.POST['badge_text']
         p.weight_unit = request.POST['weight_unit']
-        p.description = request.POST['description']
+        p.description = request.POST.get("description", "")
         p.product_category = category
         p.calories=int(request.POST.get("calories") or 0)
-
+        p.brand = request.POST.get("brand", "")
         p.protein=float(request.POST.get("protein") or 0)
 
         p.carbs=float(request.POST.get("carbs") or 0)
@@ -552,11 +555,16 @@ def edit_product(request, pid):
 
         p.save()
 
+        messages.success(request,"Product Updated Successfully")
+
+        return redirect("view_product")
+
     context = {
         "p": p,
         "uid": uid,
         "sid": sid,
-        "pid": all_products,  
+        "pid": all_products,
+        "categories": Category.objects.all(),  
     }
 
     return render(request, "sellerapp/admin_panel.html", context)
