@@ -1,0 +1,120 @@
+/* ==========================================
+   FitFuel AI - Layout
+========================================== */
+
+.dashboard-layout{
+
+    width:min(96%,1450px);
+
+    margin:25px auto;
+
+    display:grid;
+
+    grid-template-columns:260px 1fr 320px;
+
+    gap:24px;
+
+    align-items:start;
+}
+
+/* Left Sidebar */
+
+.sidebar{
+
+    position:sticky;
+
+    top:120px;
+}
+
+/* Main */
+
+.main-content{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+}
+
+/* Right */
+
+.right-panel{
+
+    position:sticky;
+
+    top:120px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+/* Glass Card */
+
+.glass-card{
+
+    background:rgba(255,255,255,.75);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border-radius:24px;
+
+    border:1px solid rgba(255,255,255,.45);
+
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+
+    padding:22px;
+}
+
+/* Responsive */
+
+@media(max-width:1200px){
+
+.dashboard-layout{
+
+grid-template-columns:240px 1fr;
+
+}
+
+.right-panel{
+
+display:none;
+
+}
+
+}
+
+@media(max-width:992px){
+
+.dashboard-layout{
+
+grid-template-columns:1fr;
+
+}
+
+.sidebar{
+
+display:none;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-layout{
+
+width:94%;
+
+margin-top:18px;
+
+}
+
+}

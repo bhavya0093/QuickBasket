@@ -1,0 +1,254 @@
+{% load static %}
+<nav class="ff-navbar">
+
+    <!-- ===========================
+         Logo Section
+    ============================ -->
+
+    <div class="ff-logo">
+
+        <a href="{% url 'customer_dashboard' %}" class="ff-logo-link">
+
+            <div class="ff-logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <div class="ff-logo-text">
+
+                <h2>FitFuel AI</h2>
+
+                <span>Personalized Nutrition</span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <!-- ===========================
+         Search
+    ============================ -->
+
+    <div class="ff-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            placeholder="Search proteins, meals, supplements..."
+        >
+
+    </div>
+
+    <!-- ===========================
+         Navigation
+    ============================ -->
+
+    <div class="ff-menu">
+
+        <a href="#" class="active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Assessment</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-store"></i>
+            <span>Nutrition Store</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Meal Plans</span>
+        </a>
+
+    </div>
+
+    <!-- ===========================
+         Right Actions
+    ============================ -->
+
+    <div class="ff-actions">
+            <!-- Notification -->
+
+    <button class="ff-icon" title="Notifications">
+
+        <i class="fa-regular fa-bell"></i>
+
+        <span class="ff-badge">3</span>
+
+    </button>
+
+    <!-- Wishlist -->
+
+    <button class="ff-icon" title="Wishlist">
+
+        <i class="fa-regular fa-heart"></i>
+
+    </button>
+
+    <!-- Cart -->
+
+    <a href="{% url 'view_cart' %}" class="ff-icon ff-cart" title="Cart">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <span class="ff-badge">
+
+            {% if cart_count %}
+                {{ cart_count }}
+            {% else %}
+                0
+            {% endif %}
+
+        </span>
+
+    </a>
+
+    <!-- Profile -->
+
+    <div class="ff-profile">
+
+      <div class="ff-profile-image">
+
+    {% if cid.pic %}
+
+        <img src="{{ cid.pic.url }}" alt="Profile">
+
+    {% else %}
+
+        <img src="{% static 'customerapp/images/default-user.png' %}" alt="Profile">
+
+    {% endif %}
+
+</div>
+
+        <div class="ff-user">
+
+            <strong>
+
+                {{ cid.firstname }} {{ cid.lastname }}
+
+            </strong>
+
+            <small>
+
+                Premium Member
+
+            </small>
+
+        </div>
+
+        <i class="fa-solid fa-chevron-down"></i>
+
+        <!-- Dropdown -->
+
+        <div class="ff-dropdown">
+
+            <a href="#">
+
+                <i class="fa-regular fa-user"></i>
+
+                My Profile
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Progress
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </a>
+
+            <hr>
+
+            <a href="{% url 'logout' %}" class="logout">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+    <!-- ===========================
+         Mobile Toggle
+    ============================ -->
+
+    <button class="ff-mobile-toggle">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+</div>
+
+</nav>
+
+<!-- ===========================
+     Mobile Menu
+=========================== -->
+
+<div class="ff-mobile-menu">
+
+    <a href="#">
+        <i class="fa-solid fa-house"></i>
+        Home
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-brain"></i>
+        AI Assessment
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-store"></i>
+        Nutrition Store
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-utensils"></i>
+        Meal Plans
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-heart"></i>
+        Wishlist
+    </a>
+
+    <a href="{% url 'view_cart' %}">
+        <i class="fa-solid fa-cart-shopping"></i>
+        My Cart
+    </a>
+
+    <a href="#">
+        <i class="fa-regular fa-user"></i>
+        Profile
+    </a>
+
+    <a href="{% url 'logout' %}" class="logout">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</div>

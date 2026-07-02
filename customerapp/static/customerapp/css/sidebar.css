@@ -1,0 +1,235 @@
+/* ==========================================
+   FitFuel AI - Premium Sidebar
+========================================== */
+
+.sidebar{
+
+    position:sticky;
+    top:120px;
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* Sidebar Card */
+
+.sidebar-card{
+
+    background:rgba(255,255,255,.78);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.45);
+
+    border-radius:24px;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+
+    padding:22px;
+}
+
+/* User */
+
+.sidebar-user{
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.sidebar-user img{
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #10B981;
+
+    margin-bottom:15px;
+}
+
+.sidebar-user h3{
+
+    font-size:20px;
+    font-weight:700;
+
+    color:#1E293B;
+}
+
+.sidebar-user p{
+
+    margin-top:5px;
+
+    font-size:14px;
+
+    color:#64748B;
+}
+
+/* Navigation */
+
+.sidebar-nav{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.sidebar-nav a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 18px;
+
+    text-decoration:none;
+
+    color:#334155;
+
+    font-weight:600;
+
+    border-radius:16px;
+
+    transition:.30s;
+}
+
+/* Icon */
+
+.sidebar-nav a i{
+
+    width:22px;
+
+    text-align:center;
+
+    font-size:18px;
+}
+
+/* Hover */
+
+.sidebar-nav a:hover{
+
+    background:#10B981;
+
+    color:#fff;
+
+    transform:translateX(6px);
+}
+
+/* Active */
+
+.sidebar-nav a.active{
+
+    background:#10B981;
+
+    color:#fff;
+
+    box-shadow:0 10px 25px rgba(16,185,129,.25);
+}
+
+/* Divider */
+
+.sidebar-divider{
+
+    margin:18px 0;
+
+    border-top:1px solid rgba(148,163,184,.18);
+}
+
+/* AI Card */
+
+.ai-card{
+
+    margin-top:20px;
+
+    background:linear-gradient(
+        135deg,
+        #10B981,
+        #06B6D4
+    );
+
+    color:#fff;
+
+    border-radius:20px;
+
+    padding:20px;
+}
+
+.ai-card h4{
+
+    font-size:18px;
+
+    margin-bottom:8px;
+}
+
+.ai-card p{
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    opacity:.9;
+}
+
+.ai-btn{
+
+    margin-top:18px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    color:#10B981;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.30s;
+}
+
+.ai-btn:hover{
+
+    transform:translateY(-3px);
+}
+
+/* Logout */
+
+.logout-link{
+
+    color:#EF4444 !important;
+}
+
+.logout-link:hover{
+
+    background:#EF4444 !important;
+
+    color:#fff !important;
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+
+.sidebar{
+
+display:none;
+
+}
+
+}

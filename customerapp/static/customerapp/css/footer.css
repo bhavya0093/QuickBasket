@@ -1,0 +1,193 @@
+/* ==========================================
+   FitFuel AI - Premium Footer
+========================================== */
+
+.ff-footer{
+
+    width:min(96%,1450px);
+
+    margin:40px auto 20px;
+
+    background:rgba(255,255,255,.78);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.45);
+
+    border-radius:28px;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+
+    overflow:hidden;
+}
+
+/* Main Grid */
+
+.ff-footer-main{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr 1fr;
+
+    gap:40px;
+
+    padding:50px;
+}
+
+/* Logo */
+
+.ff-footer-logo h2{
+
+    font-size:30px;
+
+    color:#1E3A8A;
+
+    margin-bottom:12px;
+
+    font-weight:800;
+}
+
+.ff-footer-logo p{
+
+    color:#64748B;
+
+    line-height:1.8;
+
+    font-size:15px;
+}
+
+/* Headings */
+
+.ff-footer h4{
+
+    color:#1E293B;
+
+    margin-bottom:20px;
+
+    font-size:18px;
+}
+
+/* Links */
+
+.ff-footer ul{
+
+    list-style:none;
+}
+
+.ff-footer ul li{
+
+    margin-bottom:14px;
+}
+
+.ff-footer ul li a{
+
+    color:#64748B;
+
+    text-decoration:none;
+
+    transition:.30s;
+}
+
+.ff-footer ul li a:hover{
+
+    color:#10B981;
+
+    padding-left:6px;
+}
+
+/* Social */
+
+.social-links{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:22px;
+}
+
+.social-links a{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#F1F5F9;
+
+    color:#1E3A8A;
+
+    transition:.30s;
+
+    text-decoration:none;
+}
+
+.social-links a:hover{
+
+    background:#10B981;
+
+    color:#fff;
+
+    transform:translateY(-4px);
+}
+
+/* Bottom */
+
+.ff-footer-bottom{
+
+    border-top:1px solid rgba(148,163,184,.18);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 50px;
+
+    color:#64748B;
+
+    font-size:14px;
+}
+
+/* Mobile */
+
+@media(max-width:992px){
+
+.ff-footer-main{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.ff-footer-main{
+
+grid-template-columns:1fr;
+
+padding:35px;
+
+}
+
+.ff-footer-bottom{
+
+flex-direction:column;
+
+gap:10px;
+
+text-align:center;
+
+}
+
+}
