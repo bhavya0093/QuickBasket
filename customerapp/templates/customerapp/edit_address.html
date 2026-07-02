@@ -145,9 +145,11 @@
 
             </div>
 
+            <input type="hidden" name="next" value="{{ next_url }}">
+
             <div class="button-group">
 
-                <a href="{% url 'checkout' %}" class="back-btn">
+                <a href="{{ next_url }}" class="back-btn">
                     ← Cancel
                 </a>
 

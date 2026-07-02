@@ -25,6 +25,8 @@ def customer_dashboard(request):
 
         orders = Order.objects.filter(customer=cid).order_by("-order_date")[:5]
 
+        active_page = request.GET.get("active_page") or "home"
+
         context = {
             "uid": uid,
             "cid": cid,
@@ -32,6 +34,7 @@ def customer_dashboard(request):
             "categories": categories,
             "selected_category": selected_category,
             "orders": orders,
+            "active_page": active_page,
         }
 
         return render(request, "customerapp/customer_dashboard.html", context)
@@ -61,6 +64,7 @@ def edit_profile(request):
                 "uid": uid,
                 "cid": cid,
                 "pid": product.objects.all(),
+                "active_page": "profile",
             }
 
             return render(request, "customerapp/customer_dashboard.html", context)
@@ -256,6 +260,8 @@ def add_address(request):
 
     cid = customer.objects.get(user_id=uid)
 
+    next_url = request.GET.get("next") or request.POST.get("next") or "/checkout/"
+
     if request.method == "POST":
 
         fullname = request.POST["fullname"]
@@ -293,7 +299,7 @@ def add_address(request):
             is_default=is_default
         )
         messages.success(request,"New Address Added Successfully.")
-        return HttpResponseRedirect("/checkout/")
+        return HttpResponseRedirect(next_url)
 
     addresses = Address.objects.filter(customer=cid)
 
@@ -301,6 +307,7 @@ def add_address(request):
         "addresses": addresses,
         "cid": cid,
         "uid": uid,
+        "next_url": next_url,
     }
 
     return render(
@@ -323,9 +330,11 @@ def delete_address(request, pk):
         customer=cid
     )
 
+    next_url = request.GET.get("next") or "/checkout/"
+
     address.delete()
     messages.success(request,"Address Deleted Successfully.")
-    return HttpResponseRedirect("/checkout/")
+    return HttpResponseRedirect(next_url)
 
 def edit_address(request, pk):
 
@@ -336,6 +345,8 @@ def edit_address(request, pk):
     cid = customer.objects.get(user_id=uid)
 
     address = get_object_or_404(Address, id=pk, customer=cid)
+
+    next_url = request.GET.get("next") or request.POST.get("next") or "/checkout/"
 
     if request.method == "POST":
 
@@ -365,10 +376,11 @@ def edit_address(request, pk):
 
         address.save()
         messages.success(request,"Address Updated Successfully.")
-        return HttpResponseRedirect("/checkout/")
+        return HttpResponseRedirect(next_url)
 
     return render(request, "customerapp/edit_address.html", {
-        "a": address
+        "a": address,
+        "next_url": next_url,
     })
 
 def place_order(request):

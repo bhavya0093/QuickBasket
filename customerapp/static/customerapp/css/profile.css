@@ -285,3 +285,140 @@
 #page-profile .sp.s3 { background: #fef3c7; color: #d97706; } /* Pending / Confirmed (Amber) */
 #page-profile .sp.s4 { background: #fee2e2; color: #dc2626; } /* Cancelled (Red) */
 #page-profile .sp.s5 { background: #ede9fe; color: #7c3aed; } /* Packed (Purple) */ 
+
+/* Saved Addresses Section */
+#page-profile .address-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 15px;
+}
+
+#page-profile .addr-card {
+  background: #fff;
+  border: 1.5px solid #ede9fe;
+  border-radius: 16px;
+  padding: 18px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+#page-profile .addr-card:hover {
+  border-color: #8b5cf6;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.05);
+}
+
+#page-profile .addr-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+#page-profile .addr-title {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+#page-profile .addr-type {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+#page-profile .addr-type.home {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+#page-profile .addr-type.work {
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+}
+
+#page-profile .addr-type.other {
+  background: rgba(100, 116, 139, 0.1);
+  color: #64748b;
+}
+
+#page-profile .addr-default-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #dff7ef;
+  color: #059669;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: auto;
+}
+
+#page-profile .addr-meta {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+#page-profile .addr-details {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+#page-profile .addr-actions {
+  display: flex;
+  gap: 15px;
+  border-top: 1.5px solid #ede9fe;
+  padding-top: 12px;
+  font-size: 0.82rem;
+}
+
+#page-profile .addr-actions a {
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s ease;
+}
+
+#page-profile .addr-actions .edit-btn {
+  color: #7c3aed;
+}
+
+#page-profile .addr-actions .edit-btn:hover {
+  color: #6d28d9;
+}
+
+#page-profile .addr-actions .delete-btn {
+  color: #ef4444;
+}
+
+#page-profile .addr-actions .delete-btn:hover {
+  color: #dc2626;
+}
+
+#page-profile .add-address-btn {
+  background: #7c3aed;
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+#page-profile .add-address-btn:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
+} 
