@@ -89,7 +89,7 @@
   </div>
 
 <!-- CATEGORIES -->
-<div class="sh" style="margin-bottom:14px;">
+<div class="sh" style="margin-bottom:18px;">
     <div class="sh-t">Browse <em>Categories</em></div>
 </div>
 
@@ -106,53 +106,126 @@
     {% endfor %}
 </div>
 
-<!-- FRESH PICKS -->
-<div class="sh" style="margin:28px 0 18px;">
-    <div class="sh-t"><em>Fresh</em> Picks Today</div>
-    <a href="#" class="sh-a">View All <i class="fas fa-arrow-right"></i></a>
+<!-- Zepto Feature Badges -->
+<div class="zepto-promo-row">
+    <div class="promo-tile">
+        <div class="promo-icon"><i class="fas fa-bolt" style="color: #f59e0b;"></i></div>
+        <div class="promo-text">
+            <h4>10 Min Delivery</h4>
+            <p>From store to door instantly</p>
+        </div>
+    </div>
+    <div class="promo-tile">
+        <div class="promo-icon"><i class="fas fa-shield-alt" style="color: #10b981;"></i></div>
+        <div class="promo-text">
+            <h4>Super Fresh Guarantee</h4>
+            <p>100% Quality handpicked items</p>
+        </div>
+    </div>
+    <div class="promo-tile">
+        <div class="promo-icon"><i class="fas fa-tags" style="color: #8b5cf6;"></i></div>
+        <div class="promo-text">
+            <h4>Best Prices & Offers</h4>
+            <p>Cheaper than your local supermarket</p>
+        </div>
+    </div>
 </div>
 
-<div class="pgrid" id="pgrid">
-    {% for p in pid %}
-    <div class="pcd">
-        <div class="pcd-img">
-            <img src="{{ p.picture.url }}" alt="{{ p.product_name }}">
-            {% if p.badge_text %}
-            <span class="pcd-bdg">{{ p.badge_text }}</span>
-            {% endif %}
-            <label class="pcd-fav">
-                <input type="checkbox" class="fav-chk">
-                <i class="far fa-heart"></i>
-                <i class="fas fa-heart"></i>
-            </label>
-            {% if p.discount %}
-            <span class="pcd-discount">{{ p.discount }}% OFF</span>
-            {% endif %}
-        </div>
-        <div class="pcd-body">
-            <div class="pcd-cat-tag">{{ p.product_category }}</div>
-            <div class="pcd-name">{{ p.product_name }}</div>
-            <div class="pcd-qty">
-                <i class="fas fa-weight-hanging" style="font-size:0.7rem;"></i>
-                {{ p.weight_unit }}
-            </div>
-            <div class="pcd-foot">
-                <div class="pcd-pp">
-                    <span class="pcd-now">₹{{ p.product_price }}</span>
-                </div>
-                <a href="{% url 'add_to_cart' pk=p.id %}" class="pcd-add">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
-        </div>
+{% if selected_category %}
+    <!-- Filtered view: show products in a full grid -->
+    <div class="sh" style="margin:28px 0 18px;">
+        <div class="sh-t">Products in <em>{{ selected_category_obj.category_name }}</em></div>
     </div>
-    {% empty %}
-    <div class="empty-products">
-        <i class="fas fa-box-open"></i>
-        <p>No products available</p>
+
+    <div class="pgrid" id="pgrid">
+        {% for p in pid %}
+        <div class="pcd">
+            <div class="pcd-img">
+                <img src="{{ p.picture.url }}" alt="{{ p.product_name }}">
+                {% if p.badge_text %}
+                <span class="pcd-bdg">{{ p.badge_text }}</span>
+                {% endif %}
+                <label class="pcd-fav">
+                    <input type="checkbox" class="fav-chk">
+                    <i class="far fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                </label>
+                {% if p.discount %}
+                <span class="pcd-discount">{{ p.discount }}% OFF</span>
+                {% endif %}
+            </div>
+            <div class="pcd-body">
+                <div class="pcd-cat-tag">{{ p.product_category }}</div>
+                <div class="pcd-name">{{ p.product_name }}</div>
+                <div class="pcd-qty">
+                    <i class="fas fa-weight-hanging" style="font-size:0.7rem;"></i>
+                    {{ p.weight_unit }}
+                </div>
+                <div class="pcd-foot">
+                    <div class="pcd-pp">
+                        <span class="pcd-now">₹{{ p.product_price }}</span>
+                    </div>
+                    <a href="{% url 'add_to_cart' pk=p.id %}" class="pcd-add">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-products" style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;font-size:0.9rem;width:100%;">
+            <i class="fas fa-box-open" style="font-size:2rem;margin-bottom:8px;color:#cbd5e1;display:block;"></i>
+            <span>No products available in this category</span>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <!-- Default homepage: dynamic category-wise product shelves -->
+    {% for section in category_sections %}
+    <div class="sh" style="margin:36px 0 18px;">
+        <div class="sh-t">Fresh <em>{{ section.category.category_name }}</em></div>
+        <a href="{% url 'customer_dashboard' %}?category={{ section.category.id }}" class="sh-a">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    
+    <div class="horizontal-shelf">
+        <div class="shelf-track">
+            {% for p in section.products %}
+            <div class="pcd">
+                <div class="pcd-img">
+                    <img src="{{ p.picture.url }}" alt="{{ p.product_name }}">
+                    {% if p.badge_text %}
+                    <span class="pcd-bdg">{{ p.badge_text }}</span>
+                    {% endif %}
+                    <label class="pcd-fav">
+                        <input type="checkbox" class="fav-chk">
+                        <i class="far fa-heart"></i>
+                        <i class="fas fa-heart"></i>
+                    </label>
+                    {% if p.discount %}
+                    <span class="pcd-discount">{{ p.discount }}% OFF</span>
+                    {% endif %}
+                </div>
+                <div class="pcd-body">
+                    <div class="pcd-cat-tag">{{ p.product_category }}</div>
+                    <div class="pcd-name">{{ p.product_name }}</div>
+                    <div class="pcd-qty">
+                        <i class="fas fa-weight-hanging" style="font-size:0.7rem;"></i>
+                        {{ p.weight_unit }}
+                    </div>
+                    <div class="pcd-foot">
+                        <div class="pcd-pp">
+                            <span class="pcd-now">₹{{ p.product_price }}</span>
+                        </div>
+                        <a href="{% url 'add_to_cart' pk=p.id %}" class="pcd-add">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     {% endfor %}
-</div>
+{% endif %}
 
   <!-- ORDERS -->
   <div class="sh" style="margin-bottom:16px;"><div class="sh-t">Recent <em>Orders</em></div><a href="{% url 'orders' %}" class="sh-a">View All <i class="fas fa-arrow-right"></i></a></div>

@@ -20,8 +20,23 @@ def customer_dashboard(request):
 
         pid = product.objects.all()
 
+        selected_category_obj = None
+        category_sections = []
+
         if selected_category:
             pid = pid.filter(product_category_id=selected_category)
+            try:
+                selected_category_obj = Category.objects.get(id=selected_category)
+            except Category.DoesNotExist:
+                pass
+        else:
+            for cat in categories:
+                cat_products = product.objects.filter(product_category=cat)[:6]
+                if cat_products.exists():
+                    category_sections.append({
+                        "category": cat,
+                        "products": cat_products
+                    })
 
         orders = Order.objects.filter(customer=cid).order_by("-order_date")[:5]
 
@@ -33,6 +48,8 @@ def customer_dashboard(request):
             "pid": pid,
             "categories": categories,
             "selected_category": selected_category,
+            "selected_category_obj": selected_category_obj,
+            "category_sections": category_sections,
             "orders": orders,
             "active_page": active_page,
         }

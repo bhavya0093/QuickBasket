@@ -67,5 +67,29 @@
 {% include 'customerapp/edit.html' %}
 
 <footer>© 2026 <b>QuickBasket</b> · Ice Blue Edition · Fresh groceries in 10 minutes 🧊</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const radioIds = {
+        'nav-home': 'home',
+        'nav-cart': 'cart',
+        'nav-profile': 'profile',
+        'nav-edit': 'edit'
+    };
+    
+    Object.keys(radioIds).forEach(id => {
+        const radio = document.getElementById(id);
+        if (radio) {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    const page = radioIds[id];
+                    const newUrl = window.location.pathname + '?active_page=' + page;
+                    history.replaceState(null, '', newUrl);
+                }
+            });
+        }
+    });
+});
+</script>
 </body>
 </html>

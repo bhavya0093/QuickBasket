@@ -377,3 +377,160 @@
 .cpill.active .cpill-icon{
     background:rgba(255,255,255,0.25) !important;
 }
+
+/* ═══ ZEPTO STYLE CATEGORY GRID ═══ */
+.category-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.cat-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1.5px solid rgba(255, 255, 255, 0.8);
+    border-radius: 18px;
+    padding: 12px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.22s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.cat-card:hover {
+    transform: translateY(-4px);
+    border-color: #0ea5e9;
+    background: #f0f9ff;
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.1);
+}
+
+.cat-card.active {
+    background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+    border-color: #0ea5e9;
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
+}
+
+.cat-img-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 2.5px solid #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cat-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cat-card .cat-name {
+    font-size: 0.78rem;
+    font-weight: 750;
+    color: #334155;
+    line-height: 1.25;
+    margin-top: 4px;
+}
+
+.cat-card:hover .cat-name {
+    color: #0369a1;
+}
+
+/* ═══ ZEPTO STYLE PROMO BADGES ═══ */
+.zepto-promo-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+.promo-tile {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+    border: 1.5px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    transition: all 0.2s ease;
+}
+
+.promo-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.05);
+    border-color: rgba(124, 58, 237, 0.15);
+}
+
+.promo-icon {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+
+.promo-text h4 {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 2px 0;
+}
+
+.promo-text p {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* ═══ HORIZONTAL SCROLL PRODUCT SHELVES ═══ */
+.horizontal-shelf {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 8px 4px 20px;
+    margin-bottom: 20px;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.horizontal-shelf::-webkit-scrollbar {
+    height: 6px;
+}
+
+.horizontal-shelf::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.horizontal-shelf::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
+
+.horizontal-shelf::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.shelf-track {
+    display: flex;
+    gap: 18px;
+}
+
+.shelf-track .pcd {
+    width: 210px;
+    flex-shrink: 0;
+}
